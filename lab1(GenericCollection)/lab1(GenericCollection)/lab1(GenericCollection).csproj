@@ -6,4 +6,8 @@
     <RootNamespace>lab1_GenericCollection_</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LinkedListCollections\LinkedListCollection.csproj" />
+  </ItemGroup>
+
 </Project>

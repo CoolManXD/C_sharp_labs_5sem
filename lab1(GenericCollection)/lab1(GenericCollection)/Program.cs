@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using LinkedListCollection;
 
 namespace lab1_GenericCollection_
 {
@@ -9,107 +9,90 @@ namespace lab1_GenericCollection_
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            var s = new LoopSingleLinkList<int>();
-            s.AddFirst(1);
-            s.AddFirst(2);
-            //s.AddFirst(3);
-            foreach(var temp in s)
+            var s1 = new LoopSingleLinkList<int>();
+            s1.AddFirst(3);
+            s1.AddFirst(2);
+            s1.AddFirst(1);
+            s1.AddLast(4);
+            NodeWithLink<int> node = s1.Find(3);
+            s1.AddAfter(node, 5);
+            foreach (var temp in s1)
+            {
+                Console.WriteLine(temp);
+            }
+            Console.WriteLine($"First: {s1.First.Value} Last: {s1.Last.Value}");
+            Console.WriteLine($"Есть 5: {s1.Contains(5)} Есть 6: {s1.Contains(6)}");
+            Console.WriteLine($"Длина: {s1.Length}");
+            Console.WriteLine($"Удалил 1: {s1.Remove(1)} First: {s1.First.Value} Last: {s1.Last.Value} Длина: {s1.Length}");
+            foreach (var temp in s1)
+            {
+                Console.WriteLine(temp);
+            }
+            Console.WriteLine($"Удалил 4: {s1.Remove(4)} First: {s1.First.Value} Last: {s1.Last.Value} Длина: {s1.Length}");
+            foreach (var temp in s1)
+            {
+                Console.WriteLine(temp);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine();
+
+            var s2 = new LoopSingleLinkList<Person>();
+            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
+            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv2@gmail.com"));
+            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv1@gmail.com"));
+            s2.AddLast(new Person("Serhii", "Yanchuk", "nv4@gmail.com"));
+            NodeWithLink<Person> node2 = s2.Find(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
+            s2.AddAfter(node2, new Person("Serhii", "Yanchuk", "nv5@gmail.com"));
+            foreach (var temp in s2)
+            {
+                Console.WriteLine(temp);
+            }
+            Console.WriteLine($"First: {s2.First.Value} Last: {s2.Last.Value}");
+            Console.WriteLine($"Есть 5: {s2.Contains(new Person("Serhii", "Yanchuk", "nv5@gmail.com"))} Есть 6: {s2.Contains(new Person("Serhii", "Yanchuk", "nv6@gmail.com"))}");
+            Console.WriteLine($"Длина: {s2.Length}");
+            Console.WriteLine($"Удалил 1: {s2.Remove(new Person("Serhii", "Yanchuk", "nv1@gmail.com"))} First: {s2.First.Value} Last: {s2.Last.Value} Длина: {s2.Length}");
+            foreach (var temp in s2)
+            {
+                Console.WriteLine(temp);
+            }
+            Console.WriteLine($"Удалил 4: {s2.Remove(new Person("Serhii", "Yanchuk", "nv4@gmail.com"))} First: {s2.First.Value} Last: {s2.Last.Value} Длина: {s2.Length}");
+            foreach (var temp in s2)
             {
                 Console.WriteLine(temp);
             }
             Console.ReadKey();
         }
     }
-    public class NodeWithLink<T>
+    class Person
     {
-        public T Value { get; set; }
-        public NodeWithLink<T> Next { get; set; }
-        public NodeWithLink(T value)
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public Person(string firstName, string lastName, string email)
         {
-            Value = value;
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
         }
-    }
-    public class LoopSingleLinkList<T> : IEnumerable<T>
-    {
-        private NodeWithLink<T> head;
-        private NodeWithLink<T> last;
-        public int Length { get; private set; } = 0;
-        public void AddFirst(T value)
+        public override bool Equals(object obj)
         {
-            NodeWithLink<T> node = new NodeWithLink<T>(value);
-            if (head == null)
-            {
-                // зациклим один элемент
-                head = node;
-                last = node;
-                last.Next = node;
-            }
-            else
-            {
-                last.Next = node;
-                node.Next = head;
-                head = node;
-            }
-            Length++;
-        }
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return new LoopSingleLinkListEnumerator<T>(head, last);
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new LoopSingleLinkListEnumerator<T>(head, last);
-        }
-    }
-
-    public class LoopSingleLinkListEnumerator<T> : IEnumerator<T>
-    {
-        private NodeWithLink<T> head;
-        private NodeWithLink<T> position;
-        int flag = 0;
-        public LoopSingleLinkListEnumerator(NodeWithLink<T> head, NodeWithLink<T> last)
-        {
-            this.head = head;
-            this.position = last;
-        }
-        T IEnumerator<T>.Current
-        {
-            get
-            {
-                if (position == null)
-                    throw new NullReferenceException();
-                return position.Value;
-            }
-        }
-
-        object IEnumerator.Current
-        {
-            get
-            {
-                if (position == null)
-                    throw new NullReferenceException();
-                return position.Value;
-            }
-        }
-        public bool MoveNext()
-        {
-            if (head == null)
+            if (obj == null)
                 return false;
-            if (position.Next != head || flag++ == 0)
-            {
-                position = position.Next;
+            Person temp = obj as Person;
+            if (temp == null)
+                return false;
+            if (FirstName == temp.FirstName && LastName == temp.LastName && Email == temp.Email)
                 return true;
-            }
             return false;
         }
-
-        public void Reset()
+        public override string ToString()
         {
-            throw new NotImplementedException();
-        }
-        public void Dispose()
-        {
-            Console.WriteLine("nothing");
+            return $"{FirstName} {LastName} {Email}";
         }
     }
+    
+    
+
+    
 }
