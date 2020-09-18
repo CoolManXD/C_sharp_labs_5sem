@@ -4,21 +4,25 @@ using System.Collections.Generic;
 
 namespace LinkedListCollection
 {
+    // кольцевой односвязный список
     public class LoopSingleLinkList<T> : IEnumerable<T>
     {
-        public NodeWithLink<T> First { get; private set; }
-        public NodeWithLink<T> Last { get; private set; }
+        public delegate void SaverHandler(NodeWithLink<T> node);
+        public event SaverHandler Save;
+        public NodeWithLink<T> First { get; set; }
+        public NodeWithLink<T> Last { get; set; }
         public int Length { get; private set; } = 0;
-        public NodeWithLink<T> AddFirst(NodeWithLink<T> node)
+        public void AddFirst(NodeWithLink<T> node)
         {
+            // узел не может быть null 
             if (node == null)
-                throw new ArgumentNullException();
-            if (First == null)
-            {
-                // зациклим один элемент
+                throw new NullReferenceException();
+            
+            if (First == null) // если список пуст
+            {            
                 First = node;
                 Last = node;
-                Last.Next = node;
+                Last.Next = node; // начало = конец 
             }
             else
             {
@@ -27,17 +31,20 @@ namespace LinkedListCollection
                 First = node;
             }
             Length++;
-            return First;
         }
         public NodeWithLink<T> AddFirst(T value)
         {
-            return AddFirst(new NodeWithLink<T>(value));
+            NodeWithLink<T> newNode = new NodeWithLink<T>(value);
+            AddFirst(newNode);
+            return newNode;
         }
-        public NodeWithLink<T> AddLast(NodeWithLink<T> node)
+        public void AddLast(NodeWithLink<T> node)
         {
+            // узел не может быть null 
             if (node == null)
                 throw new ArgumentNullException();
-            if (First == null)
+            
+            if (First == null) // если список пуст 
             {
                 AddFirst(node);
             }
@@ -48,49 +55,53 @@ namespace LinkedListCollection
                 Last = node;
             }
             Length++;
-            return Last;
         }
         public NodeWithLink<T> AddLast(T value)
         {
-            return AddLast(new NodeWithLink<T>(value));
+            NodeWithLink<T> newNode = new NodeWithLink<T>(value);
+            AddLast(newNode);
+            return newNode;
         }
-        public void AddAfter(NodeWithLink<T> node, NodeWithLink<T> newNode)
+        public void AddAfter(NodeWithLink<T> node, NodeWithLink<T> newNode)  // вставка узла newNode после индентичного узла node в списке
         {
+            // узлы не могут быть null 
             if (node == null || newNode == null)
                 throw new ArgumentNullException();
+
             newNode.Next = node.Next;
             node.Next = newNode;
-            if (node == Last)
+            
+            if (node == Last) // вставка после последнего узла
                 Last = newNode;
             Length++;
         }
-        public NodeWithLink<T> AddAfter(NodeWithLink<T> node, T value)
+        public NodeWithLink<T> AddAfter(NodeWithLink<T> node, T value) // вставка узла с значением value после индентичного узла node в списке
         {
             NodeWithLink<T> newNode = new NodeWithLink<T>(value);
             AddAfter(node, newNode);
             return newNode;
         }
-        public NodeWithLink<T> Find(T value)
+        public NodeWithLink<T> Find(T value) // поиск первого вхождения узла с значением value
         {
-            if (First == null)
+            if (First == null) // список пуст
                 return null;
             NodeWithLink<T> currentNode = First;
             do
             {
-                if (currentNode.Value == null)
+                if (currentNode.Value == null) // значение в узле равно null
                 {
                     if (value == null)
                         return currentNode;
                 }
-                else if (currentNode.Value.Equals(value))
+                else if (currentNode.Value.Equals(value)) // значение в узле равно не null
                     return currentNode;
 
                 currentNode = currentNode.Next;
 
-            } while (currentNode != First);
+            } while (currentNode != First); // перебор циклического списка
             return null;
-        }
-        public NodeWithLink<T> FindLast(T value)
+        } 
+        public NodeWithLink<T> FindLast(T value) // поиск последнего вхождения узла с значением value
         {
             if (First == null)
                 return null;
@@ -110,14 +121,14 @@ namespace LinkedListCollection
 
             } while (currentNode != First);
             return foundNode;
-        }
+        } 
         public bool Contains(T value)
         {
             if (Find(value) != null)
                 return true;
             return false;
         }
-        public bool Remove(T value)
+        public bool Remove(T value) // удаление первого вхождения узла с значением value
         {
             if (First == null)
                 return false;
@@ -199,17 +210,23 @@ namespace LinkedListCollection
         }
         public void Clear()
         {
+            Save?.Invoke(First);
             First = null;
             Last = null;
             Length = 0;
         }
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            return new LoopSingleLinkListEnumerator<T>(First, Last);
+            LoopSingleLinkListEnumerator<T> enumerator = new LoopSingleLinkListEnumerator<T>(First, Last);
+            enumerator.Notify += (text) => Console.WriteLine(text);
+            return enumerator;
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return new LoopSingleLinkListEnumerator<T>(First, Last);
+            LoopSingleLinkListEnumerator<T> enumerator = new LoopSingleLinkListEnumerator<T>(First, Last);
+            enumerator.Notify += (text) => Console.WriteLine(text);
+            return enumerator;
         }
     }
+    
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using LinkedListCollection;
 
 namespace lab1_GenericCollection_
@@ -8,91 +8,176 @@ namespace lab1_GenericCollection_
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            var s1 = new LoopSingleLinkList<int>();
-            s1.AddFirst(3);
-            s1.AddFirst(2);
-            s1.AddFirst(1);
-            s1.AddLast(4);
-            NodeWithLink<int> node = s1.Find(3);
-            s1.AddAfter(node, 5);
-            foreach (var temp in s1)
-            {
-                Console.WriteLine(temp);
-            }
-            Console.WriteLine($"First: {s1.First.Value} Last: {s1.Last.Value}");
-            Console.WriteLine($"Есть 5: {s1.Contains(5)} Есть 6: {s1.Contains(6)}");
-            Console.WriteLine($"Длина: {s1.Length}");
-            Console.WriteLine($"Удалил 1: {s1.Remove(1)} First: {s1.First.Value} Last: {s1.Last.Value} Длина: {s1.Length}");
-            foreach (var temp in s1)
-            {
-                Console.WriteLine(temp);
-            }
-            Console.WriteLine($"Удалил 4: {s1.Remove(4)} First: {s1.First.Value} Last: {s1.Last.Value} Длина: {s1.Length}");
-            foreach (var temp in s1)
-            {
-                Console.WriteLine(temp);
-            }
+            //var list2 = new LoopSingleLinkList<int>();
+            //NodeWithLink<int> n = null;
 
-            Console.WriteLine();
-            Console.WriteLine();
+            checkValueType();
+            Console.WriteLine("\n");
+            checkReferenceType();
+            Console.WriteLine("\n");
+            checkReferenceTypeWithNull();
+            Console.WriteLine("\n");
 
-            var s2 = new LoopSingleLinkList<Person>();
-            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
-            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv2@gmail.com"));
-            s2.AddFirst(new Person("Serhii", "Yanchuk", "nv1@gmail.com"));
-            s2.AddLast(new Person("Serhii", "Yanchuk", "nv4@gmail.com"));
-            NodeWithLink<Person> node2 = s2.Find(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
-            s2.AddAfter(node2, new Person("Serhii", "Yanchuk", "nv5@gmail.com"));
-            foreach (var temp in s2)
-            {
-                Console.WriteLine(temp);
-            }
-            Console.WriteLine($"First: {s2.First.Value} Last: {s2.Last.Value}");
-            Console.WriteLine($"Есть 5: {s2.Contains(new Person("Serhii", "Yanchuk", "nv5@gmail.com"))} Есть 6: {s2.Contains(new Person("Serhii", "Yanchuk", "nv6@gmail.com"))}");
-            Console.WriteLine($"Длина: {s2.Length}");
-            Console.WriteLine($"Удалил 1: {s2.Remove(new Person("Serhii", "Yanchuk", "nv1@gmail.com"))} First: {s2.First.Value} Last: {s2.Last.Value} Длина: {s2.Length}");
-            foreach (var temp in s2)
-            {
-                Console.WriteLine(temp);
-            }
-            Console.WriteLine($"Удалил 4: {s2.Remove(new Person("Serhii", "Yanchuk", "nv4@gmail.com"))} First: {s2.First.Value} Last: {s2.Last.Value} Длина: {s2.Length}");
-            foreach (var temp in s2)
-            {
-                Console.WriteLine(temp);
-            }
+            Console.WriteLine("Пустая коллекция:");
+            var list = new LoopSingleLinkList<int>();
+            ShowList(list);
+
+            Console.WriteLine("\n");
+            Console.WriteLine("Коллекция с одного элемента:");
+            list.AddFirst(1);
+            ShowList(list);
+
             Console.ReadKey();
         }
-    }
-    class Person
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public Person(string firstName, string lastName, string email)
+        public static void SaveList<T>(NodeWithLink<T> node)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
+            try
+            {
+                using (StreamWriter sw = new StreamWriter("list.txt", false, System.Text.Encoding.Default))
+                {
+                    if (node != null) // список пуст
+                    {
+                        NodeWithLink<T> currentNode = node;
+                        do
+                        {
+                            if (currentNode.Value != null) // значение в узле равно null
+                                sw.WriteLine(currentNode.Value);
+                            currentNode = currentNode.Next;
+                        } while (currentNode != node); // перебор циклического списка                  
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+                Console.WriteLine($"Метод: {ex.TargetSite}");
+                Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+            }
         }
-        public override bool Equals(object obj)
+        public static void checkValueType()
         {
-            if (obj == null)
-                return false;
-            Person temp = obj as Person;
-            if (temp == null)
-                return false;
-            if (FirstName == temp.FirstName && LastName == temp.LastName && Email == temp.Email)
-                return true;
-            return false;
-        }
-        public override string ToString()
-        {
-            return $"{FirstName} {LastName} {Email}";
-        }
-    }
-    
-    
+            Console.WriteLine("Проверка value type\n");
+            var list = new LoopSingleLinkList<int>();
+            list.Save += SaveList;
 
-    
+            try 
+            {
+                list.AddFirst(3);
+                list.AddFirst(2);
+                list.AddFirst(new NodeWithLink<int>(1));
+                list.AddLast(4);
+
+                NodeWithLink<int> node = list.Find(3);
+                list.AddAfter(node, 5);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+                Console.WriteLine($"Метод: {ex.TargetSite}");
+                Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+            }
+            
+            Console.WriteLine($"First: {list.First?.Value} Last: {list.Last?.Value}");
+            Console.WriteLine($"Есть 5: {list.Contains(5)} \nЕсть 6: {list.Contains(6)}");
+            Console.WriteLine($"Длина: {list.Length}");
+            //var a = list.First;
+            //a.Next = null;
+            ShowList(list);           
+            
+            Console.WriteLine($"\nУдалено 1: {list.Remove(1)} \nFirst: {list.First?.Value} Last: {list.Last?.Value} Длина: {list.Length}");
+            ShowList(list);
+
+            Console.WriteLine($"\nУдалено 4: {list.Remove(4)} \nFirst: {list.First?.Value} Last: {list.Last?.Value} Длина: {list.Length}");
+            ShowList(list);
+
+            Console.WriteLine($"\nУдалено 10: {list.Remove(10)}");
+            ShowList(list);
+            list.Clear();
+        }
+        public static void checkReferenceType()
+        {
+            Console.WriteLine("Проверка reference type\n");
+            var list = new LoopSingleLinkList<Person>();
+
+            list.Save += SaveList;
+
+            try 
+            {
+                list.AddFirst(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
+                list.AddFirst(new Person("Serhii", "Yanchuk", "nv2@gmail.com"));
+                list.AddFirst(new NodeWithLink<Person>(new Person("Serhii", "Yanchuk", "nv1@gmail.com")));
+                list.AddLast(new Person("Serhii", "Yanchuk", "nv4@gmail.com"));
+
+                NodeWithLink<Person> node = list.Find(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
+                list.AddAfter(node, new Person("Serhii", "Yanchuk", "nv5@gmail.com"));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+                Console.WriteLine($"Метод: {ex.TargetSite}");
+                Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+            }
+
+            Console.WriteLine($"First: {list.First?.Value} \nLast: {list.Last?.Value}");
+            Console.WriteLine($"Есть 5: {list.Contains(new Person("Serhii", "Yanchuk", "nv5@gmail.com"))} \nЕсть 6: {list.Contains(new Person("Serhii", "Yanchuk", "nv6@gmail.com"))}");
+            Console.WriteLine($"Длина: {list.Length}");
+            ShowList(list);
+
+            Console.WriteLine($"\nУдалено 1: {list.Remove(new Person("Serhii", "Yanchuk", "nv1@gmail.com"))} \nFirst: {list.First?.Value} \nLast: {list.Last?.Value} Длина: {list.Length}");
+            ShowList(list);
+
+            Console.WriteLine($"\nУдалено 4: {list.Remove(new Person("Serhii", "Yanchuk", "nv4@gmail.com"))} \nFirst: {list.First?.Value} \nLast: {list.Last?.Value} Длина: {list.Length}");
+            ShowList(list);
+
+            Console.WriteLine($"\nУдалено 10: {list.Remove(new Person("Serhii", "Yanchuk", "nv10@gmail.com"))}");
+            ShowList(list);
+            list.Clear();
+        }
+        public static void checkReferenceTypeWithNull()
+        {
+            Console.WriteLine("Проверка reference type c null\n");
+            var list = new LoopSingleLinkList<Person>();
+
+            try
+            {
+                list.AddLast(new Person("Serhii", "Yanchuk", "nv1@gmail.com"));
+                Person serhii = null;
+                list.AddLast(serhii);
+                list.AddLast(new Person("Serhii", "Yanchuk", "nv3@gmail.com"));
+                list.AddLast(new Person("Serhii", "Yanchuk", "nv4@gmail.com"));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+                Console.WriteLine($"Метод: {ex.TargetSite}");
+                Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+            }           
+
+            Console.WriteLine($"First: {list.First?.Value} \nLast: {list.Last?.Value}");
+            Console.WriteLine($"Длина: {list.Length}");
+            ShowList(list);
+
+            NodeWithLink<Person> node = list.Find(null);
+            Console.WriteLine($"\nНайден null value: {node != null}");
+
+            list.Remove(null);
+            Console.WriteLine("\nУдалено узел с null value");
+            ShowList(list);
+        }
+        public static void ShowList<T>(LoopSingleLinkList<T> list)
+        {
+            try
+            {
+                int i = 0;
+                foreach (var temp in list)
+                    Console.WriteLine($"{++i}). {temp}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Исключение: {ex.Message}");
+                Console.WriteLine($"Метод: {ex.TargetSite}");
+                Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+            }
+        }
+    } 
 }
