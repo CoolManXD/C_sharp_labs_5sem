@@ -21,7 +21,11 @@ namespace LinkedListCollection
             get
             {
                 if (position == null)
-                    throw new ArgumentNullException();
+                {
+                    throw new Exception("Узел списка равен null");
+                    //throw new ArgumentNullException();
+                }    
+                    
                 return position.Value;
             }
         }
@@ -51,9 +55,6 @@ namespace LinkedListCollection
         }
         public void Dispose()
         {
-            Notify?.Invoke("Все итерации прошли успешно");
         }
-        public delegate void NotifyHandler(string text);
-        public event NotifyHandler Notify;
     }
 }

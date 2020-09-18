@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using LinkedListCollection;
 
 namespace lab1_GenericCollection_
@@ -10,6 +11,8 @@ namespace lab1_GenericCollection_
         {
             //var list2 = new LoopSingleLinkList<int>();
             //NodeWithLink<int> n = null;
+            //var list2 = new LoopSingleLinkList<int>(1, 2, 3);
+            //ShowList(list2);
 
             checkValueType();
             Console.WriteLine("\n");
@@ -29,21 +32,22 @@ namespace lab1_GenericCollection_
 
             Console.ReadKey();
         }
-        public static void SaveList<T>(NodeWithLink<T> node)
+        public static void SaveList<T>(object sender)
         {
+            LoopSingleLinkList<T> collection = sender as LoopSingleLinkList<T>;            
             try
             {
-                using (StreamWriter sw = new StreamWriter("list.txt", false, System.Text.Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(sender.GetHashCode().ToString() + ".txt", false, System.Text.Encoding.Default))
                 {
-                    if (node != null) // список пуст
+                    if (collection.First != null) // список пуст
                     {
-                        NodeWithLink<T> currentNode = node;
+                        NodeWithLink<T> currentNode = collection.First;
                         do
                         {
                             if (currentNode.Value != null) // значение в узле равно null
                                 sw.WriteLine(currentNode.Value);
                             currentNode = currentNode.Next;
-                        } while (currentNode != node); // перебор циклического списка                  
+                        } while (currentNode != collection.First); // перебор циклического списка                  
                     }
                 }
             }
@@ -58,7 +62,7 @@ namespace lab1_GenericCollection_
         {
             Console.WriteLine("Проверка value type\n");
             var list = new LoopSingleLinkList<int>();
-            list.Save += SaveList;
+            list.Save += SaveList<int>;
 
             try 
             {
@@ -97,9 +101,8 @@ namespace lab1_GenericCollection_
         public static void checkReferenceType()
         {
             Console.WriteLine("Проверка reference type\n");
-            var list = new LoopSingleLinkList<Person>();
-
-            list.Save += SaveList;
+            var list = new LoopSingleLinkList<Person>();      
+            list.Save += SaveList<Person>;
 
             try 
             {

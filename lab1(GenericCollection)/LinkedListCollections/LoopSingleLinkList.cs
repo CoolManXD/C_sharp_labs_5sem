@@ -7,11 +7,20 @@ namespace LinkedListCollection
     // кольцевой односвязный список
     public class LoopSingleLinkList<T> : IEnumerable<T>
     {
-        public delegate void SaverHandler(NodeWithLink<T> node);
-        public event SaverHandler Save;
-        public NodeWithLink<T> First { get; set; }
-        public NodeWithLink<T> Last { get; set; }
+        public delegate void SaverHandler(object sender);
+        public SaverHandler Save;
+ 
+        public NodeWithLink<T> First { get; private set; }
+        public NodeWithLink<T> Last { get; private set; }
         public int Length { get; private set; } = 0;
+        public LoopSingleLinkList() { }
+        public LoopSingleLinkList(params T[] values)
+        {
+            foreach(T temp in values )
+            {
+                AddLast(temp);
+            }
+        }
         public void AddFirst(NodeWithLink<T> node)
         {
             // узел не может быть null 
@@ -210,22 +219,18 @@ namespace LinkedListCollection
         }
         public void Clear()
         {
-            Save?.Invoke(First);
+            Save?.Invoke(this);
             First = null;
             Last = null;
             Length = 0;
         }
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
-            LoopSingleLinkListEnumerator<T> enumerator = new LoopSingleLinkListEnumerator<T>(First, Last);
-            enumerator.Notify += (text) => Console.WriteLine(text);
-            return enumerator;
+            return new LoopSingleLinkListEnumerator<T>(First, Last);
         }
         IEnumerator IEnumerable.GetEnumerator()
         {
-            LoopSingleLinkListEnumerator<T> enumerator = new LoopSingleLinkListEnumerator<T>(First, Last);
-            enumerator.Notify += (text) => Console.WriteLine(text);
-            return enumerator;
+            return new LoopSingleLinkListEnumerator<T>(First, Last);
         }
     }
     
