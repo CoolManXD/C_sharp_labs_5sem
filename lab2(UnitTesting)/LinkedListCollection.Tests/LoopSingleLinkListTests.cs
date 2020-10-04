@@ -217,7 +217,7 @@ namespace LinkedListCollection.Tests
             Assert.Throws<ArgumentNullException>(() => list.AddAfter(node2, node1));
         }
         [Fact]
-        public void AddAfter_NodeAddFirstInList_LengthUp1()
+        public void AddAfter_NodeAddAfterInList_LengthUp1()
         {
             // Arrange
             NodeWithLink<int> node1 = new NodeWithLink<int>(1);
@@ -401,7 +401,7 @@ namespace LinkedListCollection.Tests
             Assert.Null(list.Last);
         }
         [Fact]
-        public void Remove_RemoveExistMiddleNodeFromList_TrueReturned()
+        public void Remove_RemoveExistMiddleNodeFromListValueType_TrueReturned()
         {
             // Arrange
             NodeWithLink<int> node1 = new NodeWithLink<int>(1);
@@ -458,6 +458,22 @@ namespace LinkedListCollection.Tests
             Assert.False(isDeleted);
         }
         [Fact]
+        public void Remove_RemoveExistMiddleNodeFromListReferenceType_TrueReturned()
+        {
+            // Arrange
+            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
+            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
+            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
+            NodeWithLink<Person> node4 = new NodeWithLink<Person>(new Person("s4", "y4"));
+            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3, node4);
+            Person temp = new Person("s3", "y3");
+            // Act
+            bool isDeleted = list.Remove(temp);
+            // Assert
+            Assert.True(isDeleted);
+            Assert.Same(node4, node2?.Next);
+        }
+        [Fact]
         public void Remove_RemoveExistMiddleNodeFromList_LengthDown1()
         {
             // Arrange
@@ -485,5 +501,22 @@ namespace LinkedListCollection.Tests
             Assert.Null(list.First);
             Assert.Null(list.Last);
         }
+
+        // GetEnumerator/foreach
+        [Fact]
+        public void GetEnumerator_Foreach()
+        {
+            // Arrange
+            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            int[] testList = new int[5] { 1, 2, 3, 4, 5 };
+            int i = 0;
+            // Act/Assert
+            foreach (var temp in list)
+            {
+                Assert.Equal(testList[i], temp);
+                i++;
+            }
+        }
+     
     }
 }
