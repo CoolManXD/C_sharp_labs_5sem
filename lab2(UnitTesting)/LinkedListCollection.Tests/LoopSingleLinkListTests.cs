@@ -5,15 +5,17 @@ using Xunit.Sdk;
 
 namespace LinkedListCollection.Tests
 {
-    public class LoopSingleLinkListTests
+    public abstract class LoopSingleLinkListTests<T>
     {
+        protected abstract NodeWithLink<T> CreateSampleNode();
+        protected abstract NodeWithLink<T>[] CreateSequenceOfFiveNodes();
         // AddFirst
         [Fact]
-        public void AddFirst_NodeWithValueTypeElementAddFirstInEmptyList_NodeAdded()
+        public void AddFirst_NodeAddFirstInEmptyList_NodeAdded()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> first = new NodeWithLink<int>(1);
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> first = CreateSampleNode();
             // Act
             list.AddFirst(first);
             // Assert
@@ -21,38 +23,13 @@ namespace LinkedListCollection.Tests
             Assert.Same(first, list.Last);
         }
         [Fact]
-        public void AddFirst_NodeWithValueTypeElementAddFirstInNotEmptyList_NodeAdded()
+        public void AddFirst_NodeAddFirstInNotEmptyList_NodeAdded()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2);
-            NodeWithLink<int> first = list.First;
-            NodeWithLink<int> newFirst = new NodeWithLink<int>(3);
-            // Act
-            list.AddFirst(newFirst);
-            // Assert
-            Assert.Same(newFirst, list.First);
-            Assert.Same(newFirst, list.Last?.Next);
-            Assert.Same(first, newFirst?.Next);
-        }
-        [Fact]
-        public void AddFirst_NodeWithReferenceTypeElementAddFirstInEmptyList_NodeAdded()
-        {
-            // Arrange
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>();
-            NodeWithLink<Person> first = new NodeWithLink<Person>(new Person("s1","y1"));
-            // Act
-            list.AddFirst(first);
-            // Assert
-            Assert.Same(first, list.First);
-            Assert.Same(first, list.Last);
-        }
-        [Fact]
-        public void AddFirst_NodeWithReferenceTypeElementAddFirstInNotEmptyList_NodeAdded()
-        {
-            // Arrange
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(new Person("s1", "y1"), new Person("s2", "y2"));
-            NodeWithLink<Person> first = list.First;
-            NodeWithLink<Person> newFirst = new NodeWithLink<Person>(new Person("s3", "y3"));
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            NodeWithLink<T> first = list.First;
+            NodeWithLink<T> newFirst = CreateSampleNode();
             // Act
             list.AddFirst(newFirst);
             // Assert
@@ -64,8 +41,8 @@ namespace LinkedListCollection.Tests
         public void AddFirst_NullNodeAddFirstInList_ArgumentNullExceptionReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> first = null;
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> first = null;
             // Act
             // Assert
             Assert.Throws<ArgumentNullException>(() => list.AddFirst(first));
@@ -74,8 +51,8 @@ namespace LinkedListCollection.Tests
         public void AddFirst_NodeAddFirstInList_LengthUp1()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> first = new NodeWithLink<int>(1);
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> first = CreateSampleNode();
             // Act
             list.AddFirst(first);
             // Assert
@@ -84,11 +61,11 @@ namespace LinkedListCollection.Tests
 
         // AddLast
         [Fact]
-        public void AddLast_NodeWithValueTypeElementAddLastInEmptyList_NodeAdded()
+        public void AddLast_NodeAddLastInEmptyList_NodeAdded()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> last = new NodeWithLink<int>(1);
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> last = CreateSampleNode();
             // Act
             list.AddLast(last);
             // Assert
@@ -96,38 +73,13 @@ namespace LinkedListCollection.Tests
             Assert.Same(last, list.Last);
         }
         [Fact]
-        public void AddLast_NodeWithValueTypeElementAddLastInNotEmptyList_NodeAdded()
+        public void AddLast_NodeAddLastInNotEmptyList_NodeAdded()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2);
-            NodeWithLink<int> last = list.Last;
-            NodeWithLink<int> newLast = new NodeWithLink<int>(3);
-            // Act
-            list.AddLast(newLast);
-            // Assert
-            Assert.Same(newLast, list.Last);
-            Assert.Same(newLast, last.Next);
-            Assert.Same(list.First, newLast?.Next);
-        }
-        [Fact]
-        public void AddLast_NodeWithReferenceTypeElementAddLastInEmptyList_NodeAdded()
-        {
-            // Arrange
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>();
-            NodeWithLink<Person> last = new NodeWithLink<Person>(new Person("s1", "y1"));
-            // Act
-            list.AddLast(last);
-            // Assert
-            Assert.Same(last, list.First);
-            Assert.Same(last, list.Last);
-        }
-        [Fact]
-        public void AddLast_NodeWithReferenceTypeElementAddLastInNotEmptyList_NodeAdded()
-        {
-            // Arrange
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(new Person("s1", "y1"), new Person("s2", "y2"));
-            NodeWithLink<Person> last = list.Last;
-            NodeWithLink<Person> newLast = new NodeWithLink<Person>(new Person("s3", "y3"));
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            NodeWithLink<T> last = list.Last;
+            NodeWithLink<T> newLast = CreateSampleNode();
             // Act
             list.AddLast(newLast);
             // Assert
@@ -139,8 +91,8 @@ namespace LinkedListCollection.Tests
         public void AddLast_NullNodeAddLastInList_ArgumentNullExceptionReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> last = null;
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> last = null;
             // Act
             // Assert
             Assert.Throws<ArgumentNullException>(() => list.AddLast(last));
@@ -149,8 +101,8 @@ namespace LinkedListCollection.Tests
         public void AddLast_NodeAddLastInList_LengthUp1()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>();
-            NodeWithLink<int> first = new NodeWithLink<int>(1);
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>();
+            NodeWithLink<T> first = CreateSampleNode();
             // Act
             list.AddLast(first);
             // Assert
@@ -159,58 +111,43 @@ namespace LinkedListCollection.Tests
 
         // AddAfter
         [Fact]
-        public void AddAfter_NodeWithValueTypeElementAddAfterSomeNodeInList_NodeAdded()
+        public void AddAfter_NodeAddAfterSomeNodeInMiddleInList_NodeAdded()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node2 = sequence[1];
+            NodeWithLink<T> node0 = CreateSampleNode();
             // Act
-            list.AddAfter(node1, node4);
+            list.AddAfter(node1, node0);
             // Assert
-            Assert.Same(node4, node1?.Next);
-            Assert.Same(node2, node4?.Next);
-        }
-        [Fact]
-        public void AddAfter_NodeWithReferenceTypeElementAddAfterSomeNodeInList_NodeAdded()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1","y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3);
-            NodeWithLink<Person> node4 = new NodeWithLink<Person>(new Person("s4", "y4"));
-            // Act
-            list.AddAfter(node1, node4);
-            // Assert
-            Assert.Same(node4, node1?.Next);
-            Assert.Same(node2, node4?.Next);
+            Assert.Same(node0, node1?.Next);
+            Assert.Same(node2, node0?.Next);
         }
         [Fact]
         public void AddAfter_NodeAddAfterLastNodeInList_NodeAdded()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node5 = sequence[sequence.Length - 1];
+            NodeWithLink<T> node0 = CreateSampleNode();
             // Act
-            list.AddAfter(node3, node4);
+            list.AddAfter(node5, node0);
             // Assert
-            Assert.Same(node4, list.Last);
-            Assert.Same(node4, node3?.Next);
-            Assert.Same(node1, node4?.Next);
+            Assert.Same(node0, list.Last);
+            Assert.Same(node0, node5?.Next);
+            Assert.Same(node1, node0?.Next);
         }
         [Fact]
         public void AddAfter_AddAfterWithAnyNullArgumentsNode_ArgumentNullExceptionReturned()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1);
-            NodeWithLink<int> node2 = null;
+            NodeWithLink<T> node1 = CreateSampleNode();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(node1);
+            NodeWithLink<T> node2 = null;
             // Act
             // Assert
             Assert.Throws<ArgumentNullException>(() => list.AddAfter(node1, node2));
@@ -220,149 +157,72 @@ namespace LinkedListCollection.Tests
         public void AddAfter_NodeAddAfterInList_LengthUp1()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node0 = CreateSampleNode();
             // Act
-            list.AddAfter(node1, node4);
+            list.AddAfter(node1, node0);
             // Assert
-            Assert.Equal(4, list.Length);
+            Assert.Equal(sequence.Length + 1, list.Length);
         }
 
         // Find
         [Fact]
-        public void Find_FindExistNodeWithSpecificValueType_NotNullNodeReturned()
+        public void Find_FindExistNodeWithSpecificValue_NotNullNodeReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T existValue = sequence[1].Value;
             // Act
-            NodeWithLink<int> found = list.Find(4);
+            NodeWithLink<T> found = list.Find(existValue);
             // Assert
             Assert.NotNull(found);
         }
         [Fact]
-        public void Find_FindNotExistNodeWithSpecificValueType_NullNodeReturned()
+        public void Find_FindNotExistNodeWithSpecificValue_NullNodeReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T notExistValue = CreateSampleNode().Value;
             // Act
-            NodeWithLink<int> found = list.Find(0);
+            NodeWithLink<T> found = list.Find(notExistValue);
             // Assert
             Assert.Null(found);
-        }
-        [Fact]
-        public void Find_FindExistNodeWithSpecificReferenceType_NotNullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3);
-            Person temp = new Person("s2", "y2");
-            // Act
-            NodeWithLink<Person> found = list.Find(temp);
-            // Assert
-            Assert.NotNull(found);
-        }
-        [Fact]
-        public void Find_FindNotExistNodeWithSpecificReferenceType_NullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3);
-            Person temp = new Person("s4", "y4");
-            // Act
-            NodeWithLink<Person> found = list.Find(temp);
-            // Assert
-            Assert.Null(found);
-        }
-        [Fact]
-        public void Find_FindExistNodeWithNullValue_NotNullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(null);
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3);
-            // Act
-            NodeWithLink<Person> found = list.Find(null);
-            // Assert
-            Assert.NotNull(found);
         }
 
         // FindLast
         [Fact]
-        public void FindLast_FindLastExistNodeWithSpecificValueType_NotNullNodeReturned()
+        public void FindLast_FindLastExistNodeWithSpecificValue_NotNullNodeReturned()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node5 = new NodeWithLink<int>(4);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3, node4, node5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            NodeWithLink<T>[] newSequence = new NodeWithLink<T>[sequence.Length + 1];
+            sequence.CopyTo(newSequence, 0);
+
+            NodeWithLink<T> seekNode = sequence[0];
+            newSequence[newSequence.Length - 1] = seekNode;
+
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(newSequence);
+
             // Act
-            NodeWithLink<int> found = list.FindLast(3);
+            NodeWithLink<T> found = list.FindLast(seekNode.Value);
             // Assert
-            Assert.Same(node4, found);
+            Assert.Same(seekNode, found);
         }
         [Fact]
-        public void FindLast_FindLastNotExistNodeWithSpecificValueType_NullNodeReturned()
+        public void FindLast_FindLastNotExistNodeWithSpecificValue_NullNodeReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T notExistValue = CreateSampleNode().Value;
             // Act
-            NodeWithLink<int> found = list.FindLast(0);
+            NodeWithLink<T> found = list.FindLast(notExistValue);
             // Assert
             Assert.Null(found);
-        }
-        [Fact]
-        public void FindLast_FindLastExistNodeWithSpecificReferenceType_NotNullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            NodeWithLink<Person> node4 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            NodeWithLink<Person> node5 = new NodeWithLink<Person>(new Person("s4", "y4"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3, node4, node5);
-            Person temp = new Person("s3", "y3");
-            // Act
-            NodeWithLink<Person> found = list.FindLast(temp);
-            // Assert
-            Assert.Same(node4, found);
-        }
-        [Fact]
-        public void FindLast_FindLastNotExistNodeWithSpecificReferenceType_NullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3);
-            Person temp = new Person("s4", "y4");
-            // Act
-            NodeWithLink<Person> found = list.FindLast(temp);
-            // Assert
-            Assert.Null(found);
-        }
-        [Fact]
-        public void FindLast_FindLastExistNodeWithNullValue_NotNullNodeReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(null);
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(null);
-            NodeWithLink<Person> node4 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3, node4);
-            // Act
-            NodeWithLink<Person> found = list.FindLast(null);
-            // Assert
-            Assert.Same(node3, found);
         }
 
         // Contains
@@ -370,9 +230,12 @@ namespace LinkedListCollection.Tests
         public void Contains_ContainsExistNodeWithSpecificValue_TrueReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            // Arrange
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T existValue = sequence[1].Value;
             // Act
-            bool isFound = list.Contains(3);
+            bool isFound = list.Contains(existValue);
             // Assert
             Assert.True(isFound);
         }
@@ -380,9 +243,11 @@ namespace LinkedListCollection.Tests
         public void Contains_ContainsNotExistNodeWithSpecificValue_TrueReturned()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T notExistValue = CreateSampleNode().Value;
             // Act
-            bool isFound = list.Contains(0);
+            bool isFound = list.Contains(notExistValue);
             // Assert
             Assert.False(isFound);
         }
@@ -391,10 +256,11 @@ namespace LinkedListCollection.Tests
         [Fact]
         public void Remove_RemoveExistNodeFromListWithOneNode_TrueReturned()
         {
-            // Arrange         
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1);
+            // Arrange   
+            NodeWithLink<T> first = CreateSampleNode();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(first);
             // Act
-            bool isDeleted = list.Remove(1);
+            bool isDeleted = list.Remove(first.Value);
             // Assert
             Assert.True(isDeleted);
             Assert.Null(list.First);
@@ -404,28 +270,29 @@ namespace LinkedListCollection.Tests
         public void Remove_RemoveExistMiddleNodeFromListValueType_TrueReturned()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3, node4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node2 = sequence[1];
+            NodeWithLink<T> node3 = sequence[2];
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T removeValue = node2.Value;
             // Act
-            bool isDeleted = list.Remove(3);
+            bool isDeleted = list.Remove(removeValue);
             // Assert
             Assert.True(isDeleted);
-            Assert.Same(node4, node2?.Next);
+            Assert.Same(node3, node1?.Next);
         }
         [Fact]
         public void Remove_RemoveFirstNodeFromList_TrueReturned()
         {
             // Arrange         
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3, node4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node2 = sequence[1];
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T removeValue = node1.Value;
             // Act
-            bool isDeleted = list.Remove(1);
+            bool isDeleted = list.Remove(removeValue);
             // Assert
             Assert.True(isDeleted);
             Assert.Same(node2, list.First);
@@ -435,57 +302,44 @@ namespace LinkedListCollection.Tests
         public void Remove_RemoveLastNodeFromList_TrueReturned()
         {
             // Arrange         
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3, node4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            NodeWithLink<T> node4 = sequence[sequence.Length - 2];
+            NodeWithLink<T> node5 = sequence[sequence.Length - 1];
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T removeValue = node5.Value;
             // Act
-            bool isDeleted = list.Remove(4);
+            bool isDeleted = list.Remove(removeValue);
             // Assert
             Assert.True(isDeleted);
-            Assert.Same(node3, list.Last);
-            Assert.Same(node1, node3?.Next);
+            Assert.Same(node4, list.Last);
+            Assert.Same(list.First, node4?.Next);
         }
         [Fact]
-        public void Remove_RemoveNotExistNodeFromList_TrueReturned()
+        public void Remove_RemoveNotExistNodeFromList_FalseReturned()
         {
             // Arrange         
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T removeValue = CreateSampleNode().Value;
             // Act
-            bool isDeleted = list.Remove(0);
+            bool isDeleted = list.Remove(removeValue);
             // Assert
             Assert.False(isDeleted);
-        }
-        [Fact]
-        public void Remove_RemoveExistMiddleNodeFromListReferenceType_TrueReturned()
-        {
-            // Arrange
-            NodeWithLink<Person> node1 = new NodeWithLink<Person>(new Person("s1", "y1"));
-            NodeWithLink<Person> node2 = new NodeWithLink<Person>(new Person("s2", "y2"));
-            NodeWithLink<Person> node3 = new NodeWithLink<Person>(new Person("s3", "y3"));
-            NodeWithLink<Person> node4 = new NodeWithLink<Person>(new Person("s4", "y4"));
-            LoopSingleLinkList<Person> list = new LoopSingleLinkList<Person>(node1, node2, node3, node4);
-            Person temp = new Person("s3", "y3");
-            // Act
-            bool isDeleted = list.Remove(temp);
-            // Assert
-            Assert.True(isDeleted);
-            Assert.Same(node4, node2?.Next);
-        }
+        }      
         [Fact]
         public void Remove_RemoveExistMiddleNodeFromList_LengthDown1()
         {
             // Arrange
-            NodeWithLink<int> node1 = new NodeWithLink<int>(1);
-            NodeWithLink<int> node2 = new NodeWithLink<int>(2);
-            NodeWithLink<int> node3 = new NodeWithLink<int>(3);
-            NodeWithLink<int> node4 = new NodeWithLink<int>(4);
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(node1, node2, node3, node4);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            NodeWithLink<T> node1 = sequence[0];
+            NodeWithLink<T> node2 = sequence[1];
+            NodeWithLink<T> node3 = sequence[2];
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            T removeValue = node2.Value;
             // Act
-            list.Remove(3);
+            list.Remove(removeValue);
             // Assert
-            Assert.Equal(3, list.Length);
+            Assert.Equal(sequence.Length - 1, list.Length);
         }
 
         // Clear 
@@ -493,7 +347,8 @@ namespace LinkedListCollection.Tests
         public void Clear_RemoveAllNodesFromList_NodesDeleted()
         {
             // Arrange         
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
             // Act
             list.Clear();
             // Assert
@@ -507,16 +362,17 @@ namespace LinkedListCollection.Tests
         public void GetEnumerator_Foreach()
         {
             // Arrange
-            LoopSingleLinkList<int> list = new LoopSingleLinkList<int>(1, 2, 3, 4, 5);
-            int[] testList = new int[5] { 1, 2, 3, 4, 5 };
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
             int i = 0;
             // Act/Assert
             foreach (var temp in list)
             {
-                Assert.Equal(testList[i], temp);
+                Assert.Equal(sequence[i].Value, temp);
                 i++;
             }
         }
-     
+
     }
+    
 }
