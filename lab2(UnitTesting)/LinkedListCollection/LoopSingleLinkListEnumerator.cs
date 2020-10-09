@@ -22,8 +22,8 @@ namespace LinkedListCollection
             {
                 if (position == null)
                 {
-                    throw new Exception("Узел списка равен null");
-                    //throw new ArgumentNullException();
+                    //throw new Exception("Узел списка равен null");
+                    throw new ArgumentNullException();
                 }    
                     
                 return position.Value;

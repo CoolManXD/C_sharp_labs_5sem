@@ -91,8 +91,8 @@ E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\bin\Debug\netcor
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.csprojAssemblyReference.cache
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.AssemblyInfoInputs.cache
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.AssemblyInfo.cs
-E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.csproj.CoreCompileInputs.cache
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.csproj.CopyComplete
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.dll
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.pdb
 E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.genruntimeconfig.cache
+E:\VS\labs_c#_5sem\lab2(UnitTesting)\LinkedListCollection.Tests\obj\Debug\netcoreapp3.1\LinkedListCollection.Tests.csproj.CoreCompileInputs.cache

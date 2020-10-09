@@ -359,7 +359,7 @@ namespace LinkedListCollection.Tests
 
         // GetEnumerator/foreach
         [Fact]
-        public void GetEnumerator_Foreach()
+        public void GetEnumerator_ForeachWithCorrectSequence_CorrectIterations()
         {
             // Arrange
             NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
@@ -371,6 +371,18 @@ namespace LinkedListCollection.Tests
                 Assert.Equal(sequence[i].Value, temp);
                 i++;
             }
+        }
+        [Fact]
+        public void GetEnumerator_ForeachSequenceWithNullNode_ArgumentNullExceptionReturned()
+        {
+            // Arrange
+            NodeWithLink<T>[] sequence = CreateSequenceOfFiveNodes();
+            LoopSingleLinkList<T> list = new LoopSingleLinkList<T>(sequence);
+            list.First.Next = null;
+            // Act/Assert
+            Assert.Throws<ArgumentNullException>(() => {
+                foreach (var temp in list) { }       
+            });           
         }
 
     }

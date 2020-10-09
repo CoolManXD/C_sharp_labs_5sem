@@ -54,7 +54,7 @@ namespace LinkedListCollection.Tests
         }
         // Remove
         [Fact]
-        public void Remove_RemoveExistNodeWithNullValueFromList_TrueReturned()
+        public void Remove_RemoveExistMiddleNodeWithNullValueFromList_TrueReturned()
         {
             // Arrange
             NodeWithLink<EquatableMock>[] sequence = CreateSequenceOfFiveNodes();
@@ -69,6 +69,20 @@ namespace LinkedListCollection.Tests
             // Assert
             Assert.True(isDeleted);
             Assert.Same(node3, node1?.Next);
+        }
+        [Fact]
+        public void Remove_RemoveExistNodeWithNullValueFromListWithOneNode_TrueReturned()
+        {
+            // Arrange
+            NodeWithLink<EquatableMock> node0 = new NodeWithLink<EquatableMock>(null);
+            LoopSingleLinkList<EquatableMock> list = new LoopSingleLinkList<EquatableMock>(node0);
+            EquatableMock removeValue = null;
+            // Act
+            bool isDeleted = list.Remove(removeValue);
+            // Assert
+            Assert.True(isDeleted);
+            Assert.Null(list.First);
+            Assert.Null(list.Last);
         }
 
         protected override NodeWithLink<EquatableMock> CreateSampleNode()
