@@ -5,7 +5,7 @@ using Xunit.Sdk;
 
 namespace LinkedListCollection.Tests
 {
-    public abstract class LoopSingleLinkListTests<T>
+    public abstract class LoopSingleLinkListTests<T> where T: IEquatable<T>
     {
         protected abstract NodeWithLink<T> CreateSampleNode();
         protected abstract NodeWithLink<T>[] CreateSequenceOfFiveNodes();

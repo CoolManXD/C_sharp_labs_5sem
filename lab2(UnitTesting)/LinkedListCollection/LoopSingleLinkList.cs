@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace LinkedListCollection
 {
     // кольцевой односвязный список
-    public class LoopSingleLinkList<T> : IEnumerable<T>
+    public class LoopSingleLinkList<T> : IEnumerable<T> where T: IEquatable<T>
     {
         public delegate void SaverHandler(object sender);
         public SaverHandler Save;
@@ -32,7 +32,7 @@ namespace LinkedListCollection
         }
         public void AddFirst(NodeWithLink<T> node)
         {
-            // узел не может быть null 
+            // node cant be null
             if (node == null)
                 throw new ArgumentNullException();
             

@@ -99,22 +99,28 @@ namespace LinkedListCollection.Tests
             NodeWithLink<EquatableMock> node5 = new NodeWithLink<EquatableMock>(new EquatableMock(5));
             return new NodeWithLink<EquatableMock>[5] { node1, node2, node3, node4, node5 };
         }
-        public class EquatableMock
+        public class EquatableMock: IEquatable<EquatableMock>
         {
             public int Id { get; }
             public EquatableMock(int id)
             {
                 Id = id;
             }
-            public override bool Equals(object obj)
+            public bool Equals(EquatableMock obj)
             {
                 if (obj == null)
                     return false;
-                EquatableMock temp = obj as EquatableMock;
-                if (temp == null)
-                    return false;
-                return this.Id == temp.Id;
+                return this.Id == obj.Id;
             }
+            //public override bool Equals(object obj)
+            //{
+            //    if (obj == null)
+            //        return false;
+            //    EquatableMock temp = obj as EquatableMock;
+            //    if (temp == null)
+            //        return false;
+            //    return this.Id == temp.Id;
+            //}
             public override int GetHashCode()
             {
                 return Id;
