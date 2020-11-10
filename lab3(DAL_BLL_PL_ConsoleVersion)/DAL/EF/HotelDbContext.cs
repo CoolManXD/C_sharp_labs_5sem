@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using DAL.Entities;
-using System.Runtime.InteropServices;
 
 namespace DAL.EF
 {

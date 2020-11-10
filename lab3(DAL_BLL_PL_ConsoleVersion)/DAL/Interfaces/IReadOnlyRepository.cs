@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq.Expressions;
 
 namespace DAL.Interfaces
 {
@@ -8,6 +8,6 @@ namespace DAL.Interfaces
     {
         IEnumerable<T> ReadAll();
         T Read(int id);
-        IEnumerable<T> Find(Func<T, bool> predicate);
+        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
     }
 }

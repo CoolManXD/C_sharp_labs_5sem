@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Entities
 {
@@ -14,7 +12,7 @@ namespace DAL.Entities
         public PaymentStateEnum PaymentState { get; set; }
         public float Discount { get; set; }
         public DateTime ChecknInDate { get; set; }
-        public int Duration { get; set; }
+        public DateTime CheckOutDate { get; set; }
         public DateTime DateRegistration { get; set; }
         
     }

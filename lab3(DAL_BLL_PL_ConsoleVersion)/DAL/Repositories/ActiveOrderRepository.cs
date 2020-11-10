@@ -3,7 +3,6 @@ using DAL.Entities;
 using DAL.EF;
 using System.Collections.Generic;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace DAL.Repositories

@@ -1,0 +1,13 @@
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\appsettings.json
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\BLL.deps.json
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\BLL.dll
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\BLL.pdb
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\DAL.dll
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\bin\Debug\netcoreapp3.1\DAL.pdb
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.csprojAssemblyReference.cache
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfoInputs.cache
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfo.cs
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CoreCompileInputs.cache
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.dll
+E:\VS\labs_c#_5sem\lab3(DAL_BLL_PL_ConsoleVersion)\BLL\obj\Debug\netcoreapp3.1\BLL.pdb

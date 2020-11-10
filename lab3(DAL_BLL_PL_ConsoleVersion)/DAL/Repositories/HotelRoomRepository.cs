@@ -19,42 +19,22 @@ namespace DAL.Repositories
         public IEnumerable<HotelRoom> ReadAll()
         {
             //return db.HotelRooms.AsNoTracking().Include(p => p.TypeSize).Include(p => p.TypeComfort);
-            return db.HotelRooms.Include(p => p.TypeSize).Include(p => p.TypeComfort).AsNoTracking();
+            return db.HotelRooms.Include(p => p.TypeSize).Include(p => p.TypeComfort).Include(p => p.ActiveOrders).AsNoTracking();
         }
         public HotelRoom Read(int id)
         {
-            return db.HotelRooms.Where(p => p.HotelRoomId == id).Include(p => p.TypeComfort).Include(p => p.TypeSize).AsNoTracking().FirstOrDefault();
+            return db.HotelRooms.Where(p => p.HotelRoomId == id).Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders).AsNoTracking().FirstOrDefault();
             //var temp = db.HotelRooms.AsNoTracking().FirstOrDefault(p => p.HotelRoomId == id);
             //if (temp != null)
             //{
             //    db.Entry(temp).Reference(p => p.TypeComfort).Load();
             //    db.Entry(temp).Reference(p => p.TypeSize).Load();
-            //    //db.Entry(temp).Reference(p => p.TypeComfort).Load();
-            //   // db.Entry(temp).Reference(p => p.TypeSize).Load();
             //}   
             //return null;
         }
-        public IEnumerable<HotelRoom> Find(Func<HotelRoom, bool> predicate)
+        public IEnumerable<HotelRoom> Find(Expression<Func<HotelRoom, bool>> predicate)
         {
-            return db.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).AsNoTracking().Where(predicate);
+            return db.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders).Where(predicate).AsNoTracking();
         }
-        //public void Create(HotelRoom item)
-        //{
-        //    db.HotelRooms.Add(item);
-        //}
-        //public void Update(HotelRoom item)
-        //{
-        //    db.HotelRooms.Update(item);
-        //}
-        //public void Delete(int id)
-        //{
-        //    var temp = db.HotelRooms.Find(id);
-        //    if (temp != null)
-        //        db.HotelRooms.Remove(temp);
-        //}
-        //public void Delete(HotelRoom item)
-        //{ 
-        //    db.HotelRooms.Remove(item);
-        //}
     }
 }

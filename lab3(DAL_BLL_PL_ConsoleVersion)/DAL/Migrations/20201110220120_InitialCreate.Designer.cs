@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    [Migration("20201109135614_InitialCreate")]
+    [Migration("20201110220120_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,9 @@ namespace DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CheckOutDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ChecknInDate")
                         .HasColumnType("datetime2");
 
@@ -39,9 +42,6 @@ namespace DAL.Migrations
 
                     b.Property<float>("Discount")
                         .HasColumnType("real");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
 
                     b.Property<int>("HotelRoomId")
                         .HasColumnType("int");
@@ -90,7 +90,7 @@ namespace DAL.Migrations
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("PricePerDay")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("TypeComfortId")
@@ -112,7 +112,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 1,
                             Number = "10",
-                            Price = 100m,
+                            PricePerDay = 100m,
                             TypeComfortId = 1,
                             TypeSizeId = 1
                         },
@@ -120,7 +120,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 2,
                             Number = "11",
-                            Price = 100m,
+                            PricePerDay = 100m,
                             TypeComfortId = 1,
                             TypeSizeId = 1
                         },
@@ -128,7 +128,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 3,
                             Number = "12",
-                            Price = 200m,
+                            PricePerDay = 200m,
                             TypeComfortId = 2,
                             TypeSizeId = 1
                         },
@@ -136,7 +136,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 4,
                             Number = "13",
-                            Price = 200m,
+                            PricePerDay = 200m,
                             TypeComfortId = 2,
                             TypeSizeId = 2
                         },
@@ -144,7 +144,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 5,
                             Number = "20",
-                            Price = 250m,
+                            PricePerDay = 250m,
                             TypeComfortId = 2,
                             TypeSizeId = 3
                         },
@@ -152,7 +152,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 6,
                             Number = "21",
-                            Price = 250m,
+                            PricePerDay = 250m,
                             TypeComfortId = 2,
                             TypeSizeId = 5
                         },
@@ -160,7 +160,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 7,
                             Number = "22",
-                            Price = 300m,
+                            PricePerDay = 300m,
                             TypeComfortId = 3,
                             TypeSizeId = 1
                         },
@@ -168,7 +168,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 8,
                             Number = "30",
-                            Price = 400m,
+                            PricePerDay = 400m,
                             TypeComfortId = 3,
                             TypeSizeId = 2
                         },
@@ -176,7 +176,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 9,
                             Number = "31",
-                            Price = 400m,
+                            PricePerDay = 400m,
                             TypeComfortId = 4,
                             TypeSizeId = 3
                         },
@@ -184,7 +184,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 10,
                             Number = "40",
-                            Price = 600m,
+                            PricePerDay = 600m,
                             TypeComfortId = 5,
                             TypeSizeId = 6
                         },
@@ -192,7 +192,7 @@ namespace DAL.Migrations
                         {
                             HotelRoomId = 11,
                             Number = "50",
-                            Price = 800m,
+                            PricePerDay = 800m,
                             TypeComfortId = 6,
                             TypeSizeId = 2
                         });
@@ -303,7 +303,7 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("DAL.Entities.HotelRoom", "HotelRoom")
-                        .WithMany()
+                        .WithMany("ActiveOrders")
                         .HasForeignKey("HotelRoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -55,7 +55,7 @@ namespace DAL.Migrations
                     HotelRoomId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<string>(nullable: true),
-                    Price = table.Column<decimal>(nullable: false),
+                    PricePerDay = table.Column<decimal>(nullable: false),
                     TypeSizeId = table.Column<int>(nullable: false),
                     TypeComfortId = table.Column<int>(nullable: false)
                 },
@@ -87,7 +87,7 @@ namespace DAL.Migrations
                     PaymentState = table.Column<string>(nullable: false),
                     Discount = table.Column<float>(nullable: false),
                     ChecknInDate = table.Column<DateTime>(nullable: false),
-                    Duration = table.Column<int>(nullable: false),
+                    CheckOutDate = table.Column<DateTime>(nullable: false),
                     DateRegistration = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -135,7 +135,7 @@ namespace DAL.Migrations
 
             migrationBuilder.InsertData(
                 table: "HotelRooms",
-                columns: new[] { "HotelRoomId", "Number", "Price", "TypeComfortId", "TypeSizeId" },
+                columns: new[] { "HotelRoomId", "Number", "PricePerDay", "TypeComfortId", "TypeSizeId" },
                 values: new object[,]
                 {
                     { 1, "10", 100m, 1, 1 },

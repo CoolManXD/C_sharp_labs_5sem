@@ -3,12 +3,10 @@ using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Repositories
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private HotelDbContext DataBase { get; }
         private HotelRoomRepository hotelRoomRepository;
