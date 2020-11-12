@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace BLL.Models
+namespace BLL.DTO
 {
-    public class ActiveOrderBL
+    public class ActiveOrderDTO
     {
-        public ClientBL Client { get; set; }
-        public HotelRoomBL HotelRoom { get; set; }
-        public PaymentStateEnumBL PaymentState { get; set; }
+        public ClientDTO Client { get; set; }
+        public int HotelRoomId { get; set; }
+        public PaymentStateEnumDTO PaymentState { get; set; }
         public float Discount { get; set; }
         public DateTime ChecknInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
@@ -14,7 +14,7 @@ namespace BLL.Models
         
     }
 
-    public enum PaymentStateEnumBL: byte
+    public enum PaymentStateEnumDTO : byte
     {
         Paid = 1,
         Booked

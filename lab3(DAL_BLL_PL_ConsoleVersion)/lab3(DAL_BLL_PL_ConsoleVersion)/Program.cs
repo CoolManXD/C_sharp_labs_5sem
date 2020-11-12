@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using BLL;
-using BLL.Models;
+using BLL.Services;
+using BLL.DTO;
 using DAL.EF;
-using DAL.Entities;
 using DAL.Interfaces;
 using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -31,13 +30,13 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
             using(HotelService service = new HotelService(temp))
             {
                 Console.WriteLine("Такс впишите какую комнату Вы хотите найти");
-                HotelRoomSeachFilter roomFilter = new HotelRoomSeachFilter();
+                HotelRoomSeachFilterDTO roomFilter = new HotelRoomSeachFilterDTO();
                 Console.WriteLine("Какого типа комфорта вы желаете? (Standart, Suite, De_Luxe, Duplex, Family_Room, Honeymoon_Room");
                 string input = Console.ReadLine();
-                roomFilter.TypeComfort = Enum.Parse<TypeComfortEnumBLL>(input);
+                roomFilter.TypeComfort = Enum.Parse<TypeComfortEnumDTO>(input);
                 Console.WriteLine("Какого типа размера вы желаете? (SGL, DBL, DBL_TWN, TRPL, DBL_EXB, TRPL_EXB");
                 input = Console.ReadLine();
-                roomFilter.TypeSize = Enum.Parse<TypeSizeEnumBLL>(input);
+                //roomFilter.TypeSize = Enum.Parse<TypeSizeEnumDTO>(input);
                 Console.WriteLine("Какая дата?");
                 Console.Write("Год: ");
                 int year = int.Parse(Console.ReadLine());
@@ -58,17 +57,17 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
 
                     Console.Write("Какой номер предпочитаете: ");
                     string num = Console.ReadLine();
-                    HotelRoomBL room = rooms.First(p => p.Number == num);
+                    HotelRoomDTO room = rooms.First(p => p.Number == num);
 
-                    ActiveOrderBL order = new ActiveOrderBL();
-                    order.HotelRoom = room;
+                    ActiveOrderDTO order = new ActiveOrderDTO();
+                    order.HotelRoomId = room.HotelRoomId;
                     order.ChecknInDate = room.CheckInDate;
                     Console.Write("На которое количество дней: ");
                     int days = int.Parse(Console.ReadLine());
                     order.CheckOutDate = room.CheckInDate.AddDays(days);
                     order.DateRegistration = DateTime.Now;
 
-                    ClientBL client = new ClientBL();
+                    ClientDTO client = new ClientDTO();
                     Console.Write("Ваше имя: ");
                     input = Console.ReadLine();
                     client.FirstName = input;
@@ -82,7 +81,7 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
 
                     Console.Write("Бронь или оплата (Paid, Booked): ");
                     input = Console.ReadLine();
-                    order.PaymentState = Enum.Parse<PaymentStateEnumBL>(input);
+                    order.PaymentState = Enum.Parse<PaymentStateEnumDTO>(input);
 
                     service.AddActiveOrder(order);
                 }               

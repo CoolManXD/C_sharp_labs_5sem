@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BLL.Models
+namespace BLL.DTO
 {
-    public class HotelRoomBL
+    public class HotelRoomDTO
     {
         public int HotelRoomId { get; set; }
         public string Number { get; set; }
         public decimal PricePerDay { get; set; }
-        public TypeSizeEnumBLL TypeSize { get; set; }
-        public TypeComfortEnumBLL TypeComfort { get; set; }
+        public TypeSizeEnumDTO TypeSize { get; set; }
+        public TypeComfortEnumDTO TypeComfort { get; set; }
         public DateTime CheckInDate { get; set; }
         public DateTime? MaxCheckOutDate { get; set; }
     }
-    public enum TypeSizeEnumBLL : byte
+    public enum TypeSizeEnumDTO : byte
     {
         SGL = 1,
         DBL,
@@ -23,7 +23,7 @@ namespace BLL.Models
         DBL_EXB,
         TRPL_EXB
     }
-    public enum TypeComfortEnumBLL : byte
+    public enum TypeComfortEnumDTO : byte
     {
         Standart = 1,
         Suite,
