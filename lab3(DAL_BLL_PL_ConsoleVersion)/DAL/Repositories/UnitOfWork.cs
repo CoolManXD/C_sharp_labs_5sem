@@ -16,7 +16,7 @@ namespace DAL.Repositories
         {
             DataBase = new HotelDbContext(options);
         }
-        public IReadOnlyRepository<HotelRoom> HotelRooms
+        public IRepository<HotelRoom> HotelRooms
         {
             get
             {

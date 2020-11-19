@@ -4,6 +4,8 @@ using DAL.EF;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -14,17 +16,23 @@ namespace DAL.Repositories
         {
             db = context;
         }
-        public IEnumerable<ActiveOrder> ReadAll()
+        public IEnumerable<ActiveOrder> ReadAll(bool isTracked = true)
         {
-            return db.ActiveOrders;
+            if (isTracked)
+                return db.ActiveOrders;
+            return db.ActiveOrders.AsNoTracking();
         }
-        public ActiveOrder Read(int id)
+        public ActiveOrder Read(int id, bool isTracked = true)
         {
-            return db.ActiveOrders.Find(id);
+            if (isTracked)
+                return db.ActiveOrders.Find(id);
+            return db.ActiveOrders.Where(p => p.ActiveOrderId == id).AsNoTracking().FirstOrDefault();
         }
-        public IEnumerable<ActiveOrder> Find(Func<ActiveOrder, bool> predicate)
+        public IEnumerable<ActiveOrder> Find(Expression<Func<ActiveOrder, bool>> predicate, bool isTracked = true)
         {
-            return db.ActiveOrders.Where(predicate);
+            if (isTracked)
+                return db.ActiveOrders.Where(predicate);
+            return db.ActiveOrders.Where(predicate).AsNoTracking();
         }
         public void Create(ActiveOrder item)
         {
@@ -39,10 +47,6 @@ namespace DAL.Repositories
             var temp = db.ActiveOrders.Find(id);
             if (temp != null)
                 db.ActiveOrders.Remove(temp);
-        }
-        public void Delete(ActiveOrder item)
-        {
-            db.ActiveOrders.Remove(item);
         }
     }
 }

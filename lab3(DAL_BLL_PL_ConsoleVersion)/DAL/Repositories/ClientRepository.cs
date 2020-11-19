@@ -4,6 +4,8 @@ using DAL.EF;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DAL.Repositories
 {
@@ -14,17 +16,23 @@ namespace DAL.Repositories
         {
             db = context;
         }
-        public IEnumerable<Client> ReadAll()
+        public IEnumerable<Client> ReadAll(bool isTracked = true)
         {
-            return db.Clients;
+            if (isTracked)
+                return db.Clients;
+            return db.Clients.AsNoTracking();
         }
-        public Client Read(int id)
+        public Client Read(int id, bool isTracked = true)
         {
-            return db.Clients.Find(id);
+            if (isTracked)
+                return db.Clients.Find(id);
+            return db.Clients.Where(p => p.ClientId == id).AsNoTracking().FirstOrDefault();
         }
-        public IEnumerable<Client> Find(Func<Client, bool> predicate)
+        public IEnumerable<Client> Find(Expression<Func<Client, bool>> predicate, bool isTracked = true)
         {
-            return db.Clients.Where(predicate);
+            if (isTracked)
+                return db.Clients.Include(p => p.ActiveOrders).Where(predicate);
+            return db.Clients.Include(p => p.ActiveOrders).Where(predicate).AsNoTracking();
         }
         public void Create(Client item)
         {
@@ -39,10 +47,6 @@ namespace DAL.Repositories
             var temp = db.Clients.Find(id);
             if (temp != null)
                 db.Clients.Remove(temp);
-        }
-        public void Delete(Client item)
-        {
-            db.Clients.Remove(item);
         }
     }
 }

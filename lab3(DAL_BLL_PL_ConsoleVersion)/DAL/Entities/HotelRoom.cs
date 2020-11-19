@@ -12,5 +12,9 @@ namespace DAL.Entities
         public int TypeComfortId { get; set; }
         public TypeComfort TypeComfort { get; set; }
         public List<ActiveOrder> ActiveOrders { get; set; }
+        public HotelRoom()
+        {
+            ActiveOrders = new List<ActiveOrder>();
+        }
     }
 }
