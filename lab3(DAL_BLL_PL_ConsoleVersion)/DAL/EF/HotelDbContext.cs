@@ -10,7 +10,7 @@ namespace DAL.EF
     public class HotelDbContext: DbContext
     {
         public DbSet<HotelRoom> HotelRooms { get; set; }
-        public DbSet<ActiveOrder> ActiveOrders { get; set; }
+        public DbSet<ActiveOrder> ActiveOrders { get; set; } // лишнее, закомментировать потом
         public DbSet<Client> Clients { get; set; }
         public HotelDbContext(DbContextOptions<HotelDbContext> options) : base(options)
         {

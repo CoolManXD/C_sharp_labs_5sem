@@ -15,16 +15,16 @@ namespace DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("DAL.Entities.ActiveOrder", b =>
                 {
                     b.Property<int>("ActiveOrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CheckOutDate")
                         .HasColumnType("datetime2");
@@ -36,10 +36,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateRegistration")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("Discount")
-                        .HasColumnType("real");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("HotelRoomId")
                         .HasColumnType("int");
@@ -62,7 +61,7 @@ namespace DAL.Migrations
                     b.Property<int>("ClientId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -83,7 +82,7 @@ namespace DAL.Migrations
                     b.Property<int>("HotelRoomId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Number")
                         .HasColumnType("nvarchar(max)");
@@ -201,7 +200,7 @@ namespace DAL.Migrations
                     b.Property<int>("TypeComfortId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Comfort")
                         .IsRequired()
@@ -249,7 +248,7 @@ namespace DAL.Migrations
                     b.Property<int>("TypeSizeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Size")
                         .IsRequired()
@@ -295,7 +294,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.ActiveOrder", b =>
                 {
                     b.HasOne("DAL.Entities.Client", "Client")
-                        .WithMany()
+                        .WithMany("ActiveOrders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -305,6 +304,10 @@ namespace DAL.Migrations
                         .HasForeignKey("HotelRoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("HotelRoom");
                 });
 
             modelBuilder.Entity("DAL.Entities.HotelRoom", b =>
@@ -320,6 +323,20 @@ namespace DAL.Migrations
                         .HasForeignKey("TypeSizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TypeComfort");
+
+                    b.Navigation("TypeSize");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Client", b =>
+                {
+                    b.Navigation("ActiveOrders");
+                });
+
+            modelBuilder.Entity("DAL.Entities.HotelRoom", b =>
+                {
+                    b.Navigation("ActiveOrders");
                 });
 #pragma warning restore 612, 618
         }

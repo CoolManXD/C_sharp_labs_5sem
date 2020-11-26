@@ -11,10 +11,7 @@ namespace DAL.Entities
         public TypeSize TypeSize { get; set; }
         public int TypeComfortId { get; set; }
         public TypeComfort TypeComfort { get; set; }
-        public List<ActiveOrder> ActiveOrders { get; set; }
-        public HotelRoom()
-        {
-            ActiveOrders = new List<ActiveOrder>();
-        }
-    }
+        public List<ActiveOrder> ActiveOrders { get; set; } = new List<ActiveOrder>();
+        public List<Client> Clients { get; set; } = new List<Client>();
+     }
 }

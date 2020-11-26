@@ -8,6 +8,15 @@ namespace DAL.EF
     {
         public void Configure(EntityTypeBuilder<HotelRoom> builder)
         {
+            builder.HasMany(t => t.Clients).WithMany(t => t.HotelRooms)
+                .UsingEntity<ActiveOrder>(
+                    t => t.HasOne(p => p.Client).WithMany(p => p.ActiveOrders).HasForeignKey(p => p.ClientId),
+                    t => t.HasOne(p => p.HotelRoom).WithMany(p => p.ActiveOrders).HasForeignKey(p => p.HotelRoomId),
+                    t =>
+                    {
+                        t.Property(p => p.DateRegistration).HasDefaultValueSql("CURRENT_TIMESTAMP");                        
+                    });
+
             builder.HasData(
                 new HotelRoom[]
                 {

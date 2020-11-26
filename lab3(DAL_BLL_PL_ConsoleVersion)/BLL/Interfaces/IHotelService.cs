@@ -7,8 +7,8 @@ namespace BLL.Interfaces
     public interface IHotelService: IDisposable
     {
         public IEnumerable<FreeHotelRoomDTO> SearchFreeRooms(HotelRoomSeachFilterDTO filter);
-        public void AddActiveOrder(ActiveOrderDTO order);
-        public IEnumerable<ActiveOrderDTO> FindActiveOrdersClient(ClientDTO _client);
-        public void UpdateActiveOrder(ActiveOrderDTO _order);
+        public void AddClientActiveOrder(ActiveOrderDTO _order, ClientDTO _client);
+        public IEnumerable<ActiveOrderDTO> FindClientActiveOrders(string phoneNumber);
+        public void ConfirmPayment(int activeOrderId);
     }
 }

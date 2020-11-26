@@ -11,11 +11,11 @@ namespace DAL.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    ClientId = table.Column<int>(nullable: false)
+                    ClientId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,9 +26,9 @@ namespace DAL.Migrations
                 name: "TypeComfort",
                 columns: table => new
                 {
-                    TypeComfortId = table.Column<int>(nullable: false)
+                    TypeComfortId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Comfort = table.Column<string>(nullable: false)
+                    Comfort = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,9 +39,9 @@ namespace DAL.Migrations
                 name: "TypeSize",
                 columns: table => new
                 {
-                    TypeSizeId = table.Column<int>(nullable: false)
+                    TypeSizeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Size = table.Column<string>(nullable: false)
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,12 +52,12 @@ namespace DAL.Migrations
                 name: "HotelRooms",
                 columns: table => new
                 {
-                    HotelRoomId = table.Column<int>(nullable: false)
+                    HotelRoomId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Number = table.Column<string>(nullable: true),
-                    PricePerDay = table.Column<decimal>(nullable: false),
-                    TypeSizeId = table.Column<int>(nullable: false),
-                    TypeComfortId = table.Column<int>(nullable: false)
+                    Number = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PricePerDay = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TypeSizeId = table.Column<int>(type: "int", nullable: false),
+                    TypeComfortId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,15 +80,14 @@ namespace DAL.Migrations
                 name: "ActiveOrders",
                 columns: table => new
                 {
-                    ActiveOrderId = table.Column<int>(nullable: false)
+                    ActiveOrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ClientId = table.Column<int>(nullable: false),
-                    HotelRoomId = table.Column<int>(nullable: false),
-                    PaymentState = table.Column<string>(nullable: false),
-                    Discount = table.Column<float>(nullable: false),
-                    ChecknInDate = table.Column<DateTime>(nullable: false),
-                    CheckOutDate = table.Column<DateTime>(nullable: false),
-                    DateRegistration = table.Column<DateTime>(nullable: false)
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    HotelRoomId = table.Column<int>(type: "int", nullable: false),
+                    PaymentState = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChecknInDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CheckOutDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateRegistration = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {

@@ -5,9 +5,9 @@ namespace DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRepository<HotelRoom> HotelRooms { get; }
-        IRepository<Client> Clients { get; }
-        IRepository<ActiveOrder> ActiveOrders { get; }
+        IHotelRoomRepository HotelRooms { get; }
+        IClientRepository Clients { get; }
+        IActiveOrderRepository ActiveOrders { get; }
         void Save();
     }
 }

@@ -8,52 +8,48 @@ namespace DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private HotelDbContext DataBase { get; }
-        private HotelRoomRepository hotelRoomRepository;
-        private ClientRepository clientRepository;
-        private ActiveOrderRepository activeOrderRepository;
+        private HotelDbContext Context { get; }
+        private IHotelRoomRepository hotelRoomRepository;
+        private IClientRepository clientRepository;
+        private IActiveOrderRepository activeRepository;
         public UnitOfWork(DbContextOptions<HotelDbContext> options)
         {
-            DataBase = new HotelDbContext(options);
+            Context = new HotelDbContext(options);
         }
-        public IRepository<HotelRoom> HotelRooms
+        public IHotelRoomRepository HotelRooms
         {
             get
             {
                 if (hotelRoomRepository == null)
-                    hotelRoomRepository = new HotelRoomRepository(DataBase);
+                    hotelRoomRepository = new HotelRoomRepository(Context);
                 return hotelRoomRepository;
             }
         }
-        public IRepository<Client> Clients
+        public IClientRepository Clients
         {
             get
             {
                 if (clientRepository == null)
-                    clientRepository = new ClientRepository(DataBase);
+                    clientRepository = new ClientRepository(Context);
                 return clientRepository;
             }
         }
-        public IRepository<ActiveOrder> ActiveOrders
+        public IActiveOrderRepository ActiveOrders
         {
             get
             {
-                if (activeOrderRepository == null)
-                    activeOrderRepository = new ActiveOrderRepository(DataBase);
-                return activeOrderRepository;
+                if (activeRepository == null)
+                    activeRepository = new ActiveOrderRepository(Context);
+                return activeRepository;
             }
         }
-
         public void Save()
         {
-            DataBase.SaveChanges();
+            Context.SaveChanges();
         }
-
         public void Dispose()
         {
-            DataBase.Dispose();
+            Context.Dispose();
         }
-
-        
     }
 }

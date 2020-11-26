@@ -4,13 +4,14 @@ using System.Linq.Expressions;
 
 namespace DAL.Interfaces
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<TEntity> where TEntity : class
     {
-        IEnumerable<T> ReadAll(bool isTracked = true);
-        T Read(int id, bool isTracked = true);
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate, bool isTracked = true);
-        void Create(T item);
-        void Update(T item);
+        IEnumerable<TEntity> FindAll(bool isTracked = true);
+        TEntity FindById(int id, bool isTracked = true);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, bool isTracked = true);
+        void Insert(TEntity item);
+        void Update(TEntity item);
         void Delete(int id);
+        void Delete(TEntity item);
     }
 }

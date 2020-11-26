@@ -9,44 +9,22 @@ using System.Linq.Expressions;
 
 namespace DAL.Repositories
 {
-    public class ClientRepository : IRepository<Client>
+    public class ClientRepository : Repository<Client>, IClientRepository
     {
-        private HotelDbContext db;
-        public ClientRepository(HotelDbContext context)
+        public ClientRepository(HotelDbContext context) : base(context)
         {
-            db = context;
         }
-        public IEnumerable<Client> ReadAll(bool isTracked = true)
+        public void LoadActiveOrders(Client client)
         {
-            if (isTracked)
-                return db.Clients;
-            return db.Clients.AsNoTracking();
+            context.Entry(client).Collection(p => p.ActiveOrders).Load();
         }
-        public Client Read(int id, bool isTracked = true)
+        public void LoadHotelRooms(Client client)
         {
-            if (isTracked)
-                return db.Clients.Find(id);
-            return db.Clients.Where(p => p.ClientId == id).AsNoTracking().FirstOrDefault();
+            context.Entry(client).Collection(p => p.HotelRooms).Load();
         }
-        public IEnumerable<Client> Find(Expression<Func<Client, bool>> predicate, bool isTracked = true)
+        public Client FindByPhoneNumber(string number)
         {
-            if (isTracked)
-                return db.Clients.Include(p => p.ActiveOrders).Where(predicate);
-            return db.Clients.Include(p => p.ActiveOrders).Where(predicate).AsNoTracking();
-        }
-        public void Create(Client item)
-        {
-            db.Clients.Add(item);
-        }
-        public void Update(Client item)
-        {
-            db.Clients.Update(item);
-        }
-        public void Delete(int id)
-        {
-            var temp = db.Clients.Find(id);
-            if (temp != null)
-                db.Clients.Remove(temp);
+            return context.Clients.Where(p => p.PhoneNumber == number).SingleOrDefault();
         }
     }
 }

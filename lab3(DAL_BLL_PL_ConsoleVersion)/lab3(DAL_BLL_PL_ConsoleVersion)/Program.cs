@@ -26,33 +26,17 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
             optionsBuilder.UseSqlServer(connectionString, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
 
             IUnitOfWork temp = new UnitOfWork(optionsBuilder.Options);
-
-            MakeOrder(temp);
-            //using(HotelService service = new HotelService(temp))
-            //{
-                
-
-            //    ClientDTO client = new ClientDTO();
-            //    Console.Write("Ваше имя: ");
-            //    string input = Console.ReadLine();
-            //    client.FirstName = input;
-            //    Console.Write("Ваша фамилия: ");
-            //    input = Console.ReadLine();
-            //    client.LastName = input;
-            //    Console.Write("Ваш номер телефона: ");
-            //    input = Console.ReadLine();
-            //    client.PhoneNumber = input;
-
-            //    var orders = service.FindActiveOrdersClient(client);
-            //    if (!orders.Any())
-            //        Console.WriteLine("Вы ничего не заказывали");
-            //    foreach(var order in orders)
-            //        Console.WriteLine(order.HotelRoomId + " " + order.PaymentState.ToString());
-
-            //    var updateOrder = orders.ToList()[0];
-            //    updateOrder.PaymentState = PaymentStateEnumDTO.Paid;
-            //    service.UpdateActiveOrder(updateOrder);
-            //}
+            Console.WriteLine("1 - Сделать заказ\n2 - Оплатить бронировку");
+            int inputInt = int.Parse(Console.ReadLine());
+            switch (inputInt)
+            {
+                case 1:
+                    MakeOrder(temp);
+                    break;
+                case 2:
+                    ConfirmPayment(temp);
+                    break;
+            }
         }
         public static void MakeOrder(IUnitOfWork uof)
         {
@@ -102,15 +86,15 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                 {
                     Console.WriteLine("Найденные комнаты:");
                     foreach (var t in rooms)
-                        Console.WriteLine("Номер: " + t.Number + " Цена за день: " + t.PricePerDay + " Комфорт: "  + t.TypeComfort.ToString() + " Размер: " + t.TypeSize.ToString() + " Дата вьезда: " + t.CheckInDate + " Макс дата выезда: " + t.MaxCheckOutDate);              
-                    
+                        Console.WriteLine("Номер: " + t.Number + " Цена за день: " + t.PricePerDay + " Комфорт: " + t.TypeComfort.ToString() + " Размер: " + t.TypeSize.ToString() + " Дата вьезда: " + t.CheckInDate + " Макс дата выезда: " + t.MaxCheckOutDate);
+
                     FreeHotelRoomDTO room;
                     string inputString;
                     while (true)
                     {
                         Console.Write("Какой номер предпочитаете: ");
                         inputString = Console.ReadLine();
-                        room = rooms.FirstOrDefault(p => p.Number == inputString);
+                        room = rooms.SingleOrDefault(p => p.Number == inputString);
                         if (!(room is null))
                             break;
                         Console.WriteLine("У Вас проблемы с цифрами)))  Try Again");              
@@ -123,7 +107,7 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                     Console.Write("На которое количество дней: ");
                     int days = int.Parse(Console.ReadLine());
                     order.CheckOutDate = room.CheckInDate.AddDays(days);
-                    order.DateRegistration = DateTime.Now;
+                    //order.DateRegistration = DateTime.Now;
                     
                     ClientDTO client = new ClientDTO();
                     Console.Write("Ваше имя: ");
@@ -135,9 +119,9 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                     Console.Write("Ваш номер телефона: ");
                     inputString = Console.ReadLine();
                     client.PhoneNumber = inputString;
-                    order.Client = client;
+                    //order.Client = client;
 
-                    Console.Write("Бронь или оплата: 1 - Paid, 2 - Booked");
+                    Console.Write("Бронь или оплата: 1 - Paid, 2 - Booked\n");
                     while (true)
                     {
                         Console.Write("Введите номер: ");
@@ -149,10 +133,54 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                     }
                     order.PaymentState = (PaymentStateEnumDTO)inputInt;
 
-                    service.AddActiveOrder(order);
+                    service.AddClientActiveOrder(order, client);
                 }
             }
 
+        }
+        public static void ConfirmPayment(IUnitOfWork uof)
+        {
+            using (HotelService service = new HotelService(uof))
+            {
+
+                ClientDTO client = new ClientDTO();
+                //Console.Write("Ваше имя: ");
+                //string input = Console.ReadLine();
+                //client.FirstName = input;
+                //Console.Write("Ваша фамилия: ");
+                //input = Console.ReadLine();
+                //client.LastName = input;
+                //Console.Write("Ваш номер телефона: ");
+                //string input = Console.ReadLine();
+                //client.PhoneNumber = input;
+
+                Console.Write("Ваш номер телефона: ");
+                string input = Console.ReadLine();
+
+                var orders = service.FindClientActiveOrders(input);
+                if (!orders.Any())
+                    Console.WriteLine("Вы ничего не заказывали");
+                else
+                {
+                    Console.WriteLine("Ваши заказы:");
+                    int i = 1;
+                    foreach (var order in orders)
+                        Console.WriteLine(i++ + " " +order.HotelRoomId + " " + order.PaymentState.ToString());
+                    Console.WriteLine("Какой заказ Вы хотите оплитить?");
+                    int inputInt;
+                    while (true)
+                    {
+                        Console.Write("Введите номер: ");
+                        if (int.TryParse(Console.ReadLine(), out inputInt))
+                            if (inputInt >= 1 && inputInt <= orders.Count())
+                                break;
+                        Console.WriteLine("Try again");
+                        continue;
+                    }
+                    var updateOrder = orders.ToList()[inputInt - 1];
+                    service.ConfirmPayment(updateOrder.ActiveOrderId);
+                }               
+            }
         }
     }
 }

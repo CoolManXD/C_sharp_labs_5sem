@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace BLL.DTO
 {
     public class ClientDTO
@@ -7,5 +8,7 @@ namespace BLL.DTO
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
+        public List<ActiveOrderDTO> ActiveOrders { get; set; } = new List<ActiveOrderDTO>();
+        public List<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
     }
 }

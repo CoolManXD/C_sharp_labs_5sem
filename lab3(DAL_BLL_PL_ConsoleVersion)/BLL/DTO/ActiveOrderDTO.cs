@@ -10,7 +10,6 @@ namespace BLL.DTO
         public int HotelRoomId { get; set; }
         public HotelRoomDTO HotelRoom { get; set; }
         public PaymentStateEnumDTO PaymentState { get; set; }
-        public float Discount { get; set; }
         public DateTime ChecknInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public DateTime DateRegistration { get; set; }   
@@ -18,7 +17,7 @@ namespace BLL.DTO
 
     public enum PaymentStateEnumDTO : byte
     {
-        Paid = 1,
-        Booked
+        P = 1,
+        B
     }
 }
