@@ -1,13 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-using BLL.Services;
 using BLL.DTO;
-using DAL.EF;
-using DAL.Interfaces;
-using DAL.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using BLL.Interfaces;
 
 namespace lab3_DAL_BLL_PL_ConsoleVersion_
 {
@@ -15,33 +10,21 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
     {
         static void Main(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<HotelDbContext>();
-
-            ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddJsonFile("appsettings.json");
-            IConfigurationRoot config = builder.Build();
-
-            string connectionString = config.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString, opts => opts.CommandTimeout((int)TimeSpan.FromMinutes(10).TotalSeconds));
-
-            IUnitOfWork temp = new UnitOfWork(optionsBuilder.Options);
+            var provider = HotelServiceProvider.GetServiceProvider();
             Console.WriteLine("1 - Сделать заказ\n2 - Оплатить бронировку");
             int inputInt = int.Parse(Console.ReadLine());
             switch (inputInt)
             {
                 case 1:
-                    MakeOrder(temp);
+                    MakeOrder(provider.GetService<IHotelService>());
                     break;
                 case 2:
-                    ConfirmPayment(temp);
+                    ConfirmPayment(provider.GetService<IHotelService>());
                     break;
             }
         }
-        public static void MakeOrder(IUnitOfWork uof)
-        {
-            using (HotelService service = new HotelService(uof))
-            {
+        public static void MakeOrder(IHotelService service)
+        {           
                 int inputInt;
                 Console.WriteLine("Такс заполните форму для поиска нужной комнаты");
                 HotelRoomSeachFilterDTO roomFilter = new HotelRoomSeachFilterDTO();
@@ -86,7 +69,7 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                 {
                     Console.WriteLine("Найденные комнаты:");
                     foreach (var t in rooms)
-                        Console.WriteLine("Номер: " + t.Number + " Цена за день: " + t.PricePerDay + " Комфорт: " + t.TypeComfort.ToString() + " Размер: " + t.TypeSize.ToString() + " Дата вьезда: " + t.CheckInDate + " Макс дата выезда: " + t.MaxCheckOutDate);
+                        Console.WriteLine("Номер: " + t.Number + " Цена за день: " + t.PricePerDay + " Комфорт: " + t.TypeComfort.ToString() + " Размер: " + t.TypeSize.ToString() + " Дата заезда: " + t.CheckInDate + " Макс дата отъезда: " + t.MaxCheckOutDate);
 
                     FreeHotelRoomDTO room;
                     string inputString;
@@ -135,29 +118,14 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
 
                     service.AddClientActiveOrder(order, client);
                 }
-            }
-
+            service.Dispose();
         }
-        public static void ConfirmPayment(IUnitOfWork uof)
+        public static void ConfirmPayment(IHotelService service)
         {
-            using (HotelService service = new HotelService(uof))
-            {
-
-                ClientDTO client = new ClientDTO();
-                //Console.Write("Ваше имя: ");
-                //string input = Console.ReadLine();
-                //client.FirstName = input;
-                //Console.Write("Ваша фамилия: ");
-                //input = Console.ReadLine();
-                //client.LastName = input;
-                //Console.Write("Ваш номер телефона: ");
-                //string input = Console.ReadLine();
-                //client.PhoneNumber = input;
-
                 Console.Write("Ваш номер телефона: ");
                 string input = Console.ReadLine();
 
-                var orders = service.FindClientActiveOrders(input);
+                var orders = service.FindClientActiveOrders(input, PaymentStateEnumDTO.B);
                 if (!orders.Any())
                     Console.WriteLine("Вы ничего не заказывали");
                 else
@@ -165,7 +133,7 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                     Console.WriteLine("Ваши заказы:");
                     int i = 1;
                     foreach (var order in orders)
-                        Console.WriteLine(i++ + " " +order.HotelRoomId + " " + order.PaymentState.ToString());
+                        Console.WriteLine(i++ + ") " + order.HotelRoom.Number + " Дата заселение: " + order.ChecknInDate + " Цена за день: " + order.HotelRoom.PricePerDay + " " + order.PaymentState.ToString());
                     Console.WriteLine("Какой заказ Вы хотите оплитить?");
                     int inputInt;
                     while (true)
@@ -179,8 +147,8 @@ namespace lab3_DAL_BLL_PL_ConsoleVersion_
                     }
                     var updateOrder = orders.ToList()[inputInt - 1];
                     service.ConfirmPayment(updateOrder.ActiveOrderId);
-                }               
-            }
+                }
+            service.Dispose();
         }
     }
 }

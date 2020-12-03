@@ -1,11 +1,8 @@
 ﻿using DAL.Interfaces;
 using DAL.Entities;
 using DAL.EF;
-using System.Collections.Generic;
-using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace DAL.Repositories
 {
@@ -14,9 +11,15 @@ namespace DAL.Repositories
         public ClientRepository(HotelDbContext context) : base(context)
         {
         }
-        public void LoadActiveOrders(Client client)
+        public void LoadActiveOrders(Client client, PaymentStateEnum paymentState = default)
         {
-            context.Entry(client).Collection(p => p.ActiveOrders).Load();
+            IQueryable<ActiveOrder> orders = context.Entry(client).Collection(p => p.ActiveOrders).Query()
+                .Include(p => p.HotelRoom).ThenInclude(p => p.TypeComfort)
+                .Include(p => p.HotelRoom).ThenInclude(p => p.TypeSize);
+            if (paymentState != 0)
+                orders = orders.Where(p => p.PaymentState == paymentState);
+            orders.Load();
+            //context.Entry(client).Collection(p => p.ActiveOrders).Query().Where(p => p.PaymentState == paymentState).Load();
         }
         public void LoadHotelRooms(Client client)
         {

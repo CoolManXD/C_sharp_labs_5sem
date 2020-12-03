@@ -36,8 +36,7 @@ namespace DAL.Repositories
             return set.ToList();
         }
         public IEnumerable<HotelRoom> FindFreeRooms(DateTime checkInDate, TypeSizeEnum size = 0, TypeComfortEnum comfort = 0)
-        {
-            // если дата с прошлого, то сразу вернуть пустой список
+        {            
             IQueryable<HotelRoom> rooms = context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders);
             if (size != 0)
                 rooms = rooms.Where(p => p.TypeSize.Size == size);
@@ -45,9 +44,8 @@ namespace DAL.Repositories
                 rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
             return rooms.Where(p => p.ActiveOrders.All(t => t.ChecknInDate > checkInDate || t.CheckOutDate <= checkInDate)).AsNoTracking().ToList();
 
-            //var rooms = UnitoOfWork.HotelRooms.Find(p => (filter.TypeComfort == 0 || p.TypeComfort.Comfort == comfort) &&
-            //                                          (filter.TypeSize == 0 || p.TypeSize.Size == size) &&
-            //                                          p.ActiveOrders.All(t => t.ChecknInDate > filter.CheckInDate || t.CheckOutDate <= filter.CheckInDate), false);
+            // поиск по промежутку времени
+            //Where(p => p.ActiveOrders(p => p.ActiveOrders.All(t => (checkInDate > t.checkInDate && checkInDate >= t.checkOutDate) || (checkOutDate <= t.checkInDate && checkOutDate < t.checkOutDate))));
         }
         public void LoadActiveOrders(HotelRoom room)
         {

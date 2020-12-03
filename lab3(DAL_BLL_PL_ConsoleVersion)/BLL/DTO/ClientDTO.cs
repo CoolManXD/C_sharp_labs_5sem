@@ -9,6 +9,6 @@ namespace BLL.DTO
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public List<ActiveOrderDTO> ActiveOrders { get; set; } = new List<ActiveOrderDTO>();
-        public List<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
+        //public List<HotelRoomDTO> HotelRooms { get; set; } = new List<HotelRoomDTO>();
     }
 }

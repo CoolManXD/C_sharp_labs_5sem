@@ -8,41 +8,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// Обновления booked to paid (один ко многим Client to ActiveOrder). Добавить DI. Вынести Mapping в отдельный класс. Обновить PL; 
-
 namespace BLL.Services
 {
     public class HotelService: IHotelService
     {
         private IUnitOfWork UnitOfWork { get; }
-        private IMapper mapper { get; }
-        public HotelService(IUnitOfWork unitOfWork)
+        private IMapper Mapper { get; }
+        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             UnitOfWork = unitOfWork;
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<TypeComfortEnumDTO, TypeComfortEnum>().ConvertUsingEnumMapping(p => p.MapByName().MapValue(TypeComfortEnumDTO.Undefined, default)).ReverseMap();
-                cfg.CreateMap<TypeSizeEnumDTO, TypeSizeEnum>().ConvertUsingEnumMapping(p => p.MapByName().MapValue(TypeSizeEnumDTO.Undefined, default)).ReverseMap();
-                cfg.CreateMap<HotelRoom, FreeHotelRoomDTO>()
-                    .ForMember(p => p.TypeComfort, p => p.MapFrom(t => t.TypeComfort.Comfort))
-                    .ForMember(p => p.TypeSize, p => p.MapFrom(t => t.TypeSize.Size));
-                cfg.CreateMap<HotelRoom, HotelRoomDTO>()
-                    .ForMember(p => p.TypeComfort, p => p.MapFrom(t => t.TypeComfort.Comfort))
-                    .ForMember(p => p.TypeSize, p => p.MapFrom(t => t.TypeSize.Size)).ReverseMap();
 
-                cfg.CreateMap<Client, ClientDTO>().ReverseMap();
-                cfg.CreateMap<PaymentStateEnum, PaymentStateEnumDTO>().ConvertUsingEnumMapping(p => p.MapByName()).ReverseMap();
-                cfg.CreateMap<ActiveOrderDTO, ActiveOrder>().ReverseMap();
-            });
-            mapper = config.CreateMapper();
+            Mapper = mapper;
         }
         public IEnumerable<FreeHotelRoomDTO> SearchFreeRooms(HotelRoomSeachFilterDTO filter)
         {
             if (filter is null)
                 throw new ArgumentNullException("filter");
 
-            TypeComfortEnum comfort = mapper.Map<TypeComfortEnum>(filter.TypeComfort);
-            TypeSizeEnum size = mapper.Map<TypeSizeEnum>(filter.TypeSize);
+            TypeComfortEnum comfort = Mapper.Map<TypeComfortEnum>(filter.TypeComfort);
+            TypeSizeEnum size = Mapper.Map<TypeSizeEnum>(filter.TypeSize);
             var rooms = UnitOfWork.HotelRooms.FindFreeRooms(filter.CheckInDate, size, comfort);
 
             List<FreeHotelRoomDTO> result = new List<FreeHotelRoomDTO>();
@@ -57,7 +41,7 @@ namespace BLL.Services
                     if (date.ChecknInDate > filter.CheckInDate && (minDate is null || minDate > date.ChecknInDate))
                         minDate = date.ChecknInDate;
                 }
-                var temp = mapper.Map<HotelRoom, FreeHotelRoomDTO>(room);
+                var temp = Mapper.Map<HotelRoom, FreeHotelRoomDTO>(room);
                 temp.CheckInDate = filter.CheckInDate;
                 temp.MaxCheckOutDate = minDate;
                 result.Add(temp);
@@ -72,11 +56,11 @@ namespace BLL.Services
             if (_client is null)
                 throw new ArgumentException("_client");
 
-            ActiveOrder order = mapper.Map<ActiveOrder>(_order);
+            ActiveOrder order = Mapper.Map<ActiveOrder>(_order);
             Client client = UnitOfWork.Clients.FindByPhoneNumber(_client.PhoneNumber);
             if (client is null)
             {
-                client = mapper.Map<Client>(_client);
+                client = Mapper.Map<Client>(_client);
                 client.ActiveOrders.Add(order);
                 UnitOfWork.Clients.Insert(client);                
             }    
@@ -87,7 +71,7 @@ namespace BLL.Services
             }
             UnitOfWork.Save();
         }
-        public IEnumerable<ActiveOrderDTO> FindClientActiveOrders(string phoneNumber)
+        public IEnumerable<ActiveOrderDTO> FindClientActiveOrders(string phoneNumber, PaymentStateEnumDTO paymentState = default)
         {
             //if (_client is null)
             //    throw new ArgumentNullException("_client");
@@ -95,8 +79,9 @@ namespace BLL.Services
             Client client = UnitOfWork.Clients.FindByPhoneNumber(phoneNumber);
             if (!(client is null))
             {
-                UnitOfWork.Clients.LoadActiveOrders(client);
-                return mapper.Map<List<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(client.ActiveOrders);
+                PaymentStateEnum state = Mapper.Map<PaymentStateEnum>(paymentState);
+                UnitOfWork.Clients.LoadActiveOrders(client, state);
+                return Mapper.Map<List<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(client.ActiveOrders);
             }               
             return new List<ActiveOrderDTO>();
         }        
@@ -118,7 +103,7 @@ namespace BLL.Services
         //    ActiveOrder order = UnitOfWork.ActiveOrders.FindById(_order.ActiveOrderId);
         //    if (!(order is null))
         //    {
-        //        mapper.Map<ActiveOrderDTO, ActiveOrder>(_order, order);
+        //        Mapper.Map<ActiveOrderDTO, ActiveOrder>(_order, order);
         //        UnitOfWork.ActiveOrders.Update(order);
         //        UnitOfWork.Save();
         //    }
