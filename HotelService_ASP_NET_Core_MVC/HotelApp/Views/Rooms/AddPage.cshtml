@@ -1,0 +1,37 @@
+﻿
+@using HotelApp.BLL.DTO
+@model HotelApp.BLL.DTO.HotelRoomDTO
+
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>New room</h1>
+    <fieldset>
+        <form action="/Rooms/AddRoom" method="post">
+            <input type="text" name="Number" required placeholder="Number" pattern="^[a-zA-Z0-9]+$">
+            <input type="text" name="PricePerDay" required placeholder="PricePerDay" pattern="^[0-9]+$">
+            @Html.DropDownList("TypeComfort", Html.GetEnumSelectList(typeof(TypeComfortEnumDTO)))
+            @Html.DropDownList("TypeSize", Html.GetEnumSelectList(typeof(TypeSizeEnumDTO)))
+            <input type="submit" value="Add">
+        </form>
+        @*<form asp-action="AddRoom" asp-controller="Rooms" asp-antiforgery="true">
+            <input type="text" asp-for="Number" required placeholder="Number" pattern="^[0-9]+$">
+            <input type="number" asp-for="PricePerDay" required placeholder="PricePerDay" pattern="^[0-9]+$">
+            <select asp-for="TypeComfort" asp-items="Html.GetEnumSelectList<TypeComfortEnumDTO>()" required placeholder="Comfort" />
+            <select asp-for="TypeSize" asp-items="Html.GetEnumSelectList<TypeSizeEnumDTO>()" required placeholder="Size" />
+            <input type="submit" value="Add">
+        </form>*@
+
+        @*<form action="/Players/AddPlayer">
+            <input type="text" name="Number" required placeholder="Name" pattern="^[a-zA-Z]+$">
+            <input type="text" name="PricePerDay" required placeholder="Surname" pattern="^[a-zA-Z]+$">
+            <input type="text" name="year" required placeholder="Year" pattern="^[0-9]+$">
+            <select name="health">
+                <option value=true>Healthy</option>
+                <option value=false>Injured</option>
+            </select>
+            <input type="text" name="salary" required placeholder="Salary" pattern="^[0-9]+$">
+            <input type="submit" value="ADD">
+        </form>*@
+    </fieldset>
+</div>

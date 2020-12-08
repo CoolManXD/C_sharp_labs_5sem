@@ -1,0 +1,27 @@
+﻿
+@using HotelApp.BLL.DTO
+@model HotelApp.BLL.DTO.HotelRoomDTO
+
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>Edit player</h1>
+    <fieldset>
+        @*<form asp-action="Create" asp-controller="Home" asp-antiforgery="true" action="/Players/SaveChanges">
+            <input type="hidden" asp-for="Number" value="@ViewBag.Room.HotelRoomId">
+            <input type="text" asp-for="Number" required placeholder="Name" value="@ViewBag.Room.Number" pattern="^[a-zA-Z]+$">
+            <input type="number" asp-for="PricePerDay" required placeholder="PricePerDay" value="@ViewBag.Room.PricePerDay" pattern="^[0-9]+$">
+            <select asp-for="TypeComfort" asp-items="Html.GetEnumSelectList<TypeComfortEnumDTO>()" required placeholder="Comfort" value="@ViewBag.Room.TypeComfort" />
+            <select asp-for="TypeSize" asp-items="Html.GetEnumSelectList<TypeSizeEnumDTO>()" required placeholder="Size" value="@ViewBag.Room.TypeSize" />
+            <input type="submit" value="Save">
+        </form>*@
+        <form asp-action="Create" asp-controller="Home" asp-antiforgery="true">
+            <input type="hidden" asp-for="Number" value="@Model.HotelRoomId">
+            <input type="text" asp-for="Number" required placeholder="Name" value="@Model.Number" pattern="^[0-9]+$">
+            <input type="number" asp-for="PricePerDay" required placeholder="PricePerDay" value="@Model.PricePerDay" pattern="^[0-9]+$">
+            <select asp-for="TypeComfort" asp-items="Html.GetEnumSelectList<TypeComfortEnumDTO>()" required placeholder="Comfort" value="@Model.TypeComfort" />
+            <select asp-for="TypeSize" asp-items="Html.GetEnumSelectList<TypeSizeEnumDTO>()" required placeholder="Size" value="@Model.TypeSize" />
+            <input type="submit" value="Save">
+        </form>
+    </fieldset>
+</div>
