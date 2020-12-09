@@ -12,7 +12,6 @@ namespace HotelApp.BLL.DTO
         public PaymentStateEnumDTO PaymentState { get; set; }
         public DateTime ChecknInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
-        public DateTime DateRegistration { get; set; }   
     }
 
     public enum PaymentStateEnumDTO : byte

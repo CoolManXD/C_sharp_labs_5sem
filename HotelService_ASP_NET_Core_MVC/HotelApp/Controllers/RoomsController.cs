@@ -16,8 +16,6 @@ namespace HotelApp.Controllers
         {
             this.roomsAdminService = roomsAdminService;
         }
-
-        // GET: RoomController/Details/5
         public IActionResult ShowRoomsPage(int pageIndex = 1)
         {
             ViewData["pageIndex"] = pageIndex;
@@ -34,25 +32,32 @@ namespace HotelApp.Controllers
             roomsAdminService.AddRoom(room);
             return Redirect("~/Rooms/ShowRoomsPage");
         }
-        public IActionResult DeleteRoom(int id)
-        {
-            roomsAdminService.DeleteRoom(id);
-            return Redirect("~/Rooms/ShowRoomsPage");
-        }
         public IActionResult EditPage(int id)
         {
             HotelRoomDTO room = roomsAdminService.FindRoom(id);
             //ViewBag.Room = room;
             return View(room);
         }
-        [HttpPut]
+        [HttpPost]
         public IActionResult EditRoom(HotelRoomDTO room)
         {
             roomsAdminService.EditRoom(room);
             return Redirect("~/Rooms/ShowRoomsPage");
         }
-
-
-        
+        public IActionResult DeleteRoom(int id)
+        {
+            roomsAdminService.DeleteRoom(id);
+            return Redirect("~/Rooms/ShowRoomsPage");
+        }
+        public IActionResult SearchFreeRoomsForm()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult FreeRoomsPage(HotelRoomSeachFilterDTO filter, [FromServices] IClientOrderService service)
+        {
+            var rooms = service.SearchFreeRooms(filter);
+            return View(rooms);
+        }
     }
 }

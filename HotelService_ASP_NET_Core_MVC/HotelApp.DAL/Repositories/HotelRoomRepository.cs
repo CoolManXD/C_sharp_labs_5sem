@@ -47,25 +47,18 @@ namespace HotelApp.DAL.Repositories
             item.TypeSizeId = context.Set<TypeSize>().Where(p => p.Size == item.TypeSize.Size).Select(p => p.TypeSizeId).SingleOrDefault();
             context.Update(item);
         }
-
-        public IEnumerable<HotelRoom> FindFreeRooms(DateTime checkInDate, TypeSizeEnum size = 0, TypeComfortEnum comfort = 0)
-        {            
-            IQueryable<HotelRoom> rooms = context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders);
-            if (size != 0)
-                rooms = rooms.Where(p => p.TypeSize.Size == size);
-            if (comfort != 0)
-                rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
-            return rooms.Where(p => p.ActiveOrders.All(t => t.ChecknInDate > checkInDate || t.CheckOutDate <= checkInDate)).AsNoTracking().ToList();
-        }
-        public IEnumerable<HotelRoom> FindFreeRooms(DateTime checkInDate, DateTime checkOutDate, TypeSizeEnum size = 0, TypeComfortEnum comfort = 0)
+        public IEnumerable<HotelRoom> FindFreeRooms(TypeSizeEnum size, TypeComfortEnum comfort, DateTime checkInDate, DateTime? checkOutDate = null)
         {
             IQueryable<HotelRoom> rooms = context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders);
             if (size != 0)
                 rooms = rooms.Where(p => p.TypeSize.Size == size);
             if (comfort != 0)
                 rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
-            return rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.ChecknInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.ChecknInDate && checkOutDate < t.CheckOutDate)))
-                .AsNoTracking().ToList();
+            if (checkOutDate is null)
+                rooms = rooms.Where(p => p.ActiveOrders.All(t => t.ChecknInDate > checkInDate || t.CheckOutDate <= checkInDate));
+            else
+                rooms = rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.ChecknInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.ChecknInDate && checkOutDate < t.CheckOutDate)));
+            return rooms.AsNoTracking().ToList();
         }
         public void LoadActiveOrders(HotelRoom room)
         {
@@ -75,7 +68,7 @@ namespace HotelApp.DAL.Repositories
         {
             context.Entry(room).Collection(p => p.Clients).Load();
         }
-        public IEnumerable<HotelRoom> GetRoomsPage(int pageIndex, int pageSize = 3)
+        public IEnumerable<HotelRoom> GetRoomsPage(int pageIndex, int pageSize = 5)
         {
             return context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize)
                 .OrderBy(p => p.Number)

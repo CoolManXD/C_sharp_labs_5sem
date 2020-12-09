@@ -1,0 +1,18 @@
+﻿
+@using HotelApp.BLL.DTO
+@model HotelApp.BLL.DTO.HotelRoomSeachFilterDTO
+
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>Seatch free rooms</h1>
+    <fieldset>
+        <form action="/Rooms/FreeRoomsPage" method="post">
+            @Html.DropDownList("TypeSize", Html.GetEnumSelectList(typeof(TypeSizeEnumDTO)))
+            @Html.DropDownList("TypeComfort", Html.GetEnumSelectList(typeof(TypeComfortEnumDTO)))
+            <input type="date" name="CheckInDate" required placeholder="CheckInDate">
+            <input type="date" name="CheckOutDate" placeholder="CheckOutDate">
+            <input type="submit" value="Search">
+        </form>
+    </fieldset>
+</div>

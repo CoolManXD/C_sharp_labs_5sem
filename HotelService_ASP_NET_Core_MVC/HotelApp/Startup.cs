@@ -35,7 +35,7 @@ namespace HotelApp
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(p => p.AddProfile(new HotelServiceMapperProfile()));
             //services.AddTransient<IHotelService, HotelService>();
-            services.AddScoped<IHotelService, HotelService>();
+            services.AddScoped<IClientOrderService, ClientOrderService>();
             services.AddScoped<IHotelRoomsAdminService, HotelRoomsAdminService>();
         }
 

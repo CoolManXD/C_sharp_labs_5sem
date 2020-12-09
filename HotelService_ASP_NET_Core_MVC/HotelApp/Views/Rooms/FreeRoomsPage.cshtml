@@ -1,0 +1,42 @@
+﻿
+@using HotelApp.BLL.DTO
+@model IEnumerable<FreeHotelRoomDTO>
+
+<link rel="stylesheet" href="~/css/table.css" />
+
+<table class="table_dark">
+    <tr>
+        <th>Number</th>
+        <th>PricePerDay</th>
+        <th>TypeSize</th>
+        <th>TypeComfort</th>
+        <th>CheckInDate</th>
+        <th>MaxCheckOutDate</th>
+    </tr>
+    @foreach (FreeHotelRoomDTO room in Model)
+    {
+        <tr>
+            <td>@room.Number</td>
+            <td>@room.PricePerDay</td>
+            <td>@room.TypeSize.ToString()</td>
+            <td>@room.TypeComfort.ToString()</td>
+            <td>@room.CheckInDate.Date</td>
+            @if (room.MaxCheckOutDate is null)
+            {
+                <td>not occupied</td>
+            }
+            else
+            {
+                <td>@room.MaxCheckOutDate.Value.Date</td>
+            }
+            <td>
+                <a asp-area="" asp-controller="Rooms" asp-action="EditPage" asp-route-id="@room.HotelRoomId">Edit</a>
+
+            </td>
+            <td>
+                <a asp-area="" asp-controller="Rooms" asp-action="DeleteRoom" asp-route-id="@room.HotelRoomId">Delete</a>
+            </td>
+
+        </tr>
+    }
+</table>

@@ -10,11 +10,11 @@ using System.Linq;
 
 namespace HotelApp.BLL.Services
 {
-    public class HotelService: IHotelService
+    public class ClientOrderService: IClientOrderService
     {
         private IUnitOfWork UnitOfWork { get; }
         private IMapper Mapper { get; }
-        public HotelService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ClientOrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             UnitOfWork = unitOfWork;
             Mapper = mapper;
@@ -26,12 +26,24 @@ namespace HotelApp.BLL.Services
 
             TypeComfortEnum comfort = Mapper.Map<TypeComfortEnum>(filter.TypeComfort);
             TypeSizeEnum size = Mapper.Map<TypeSizeEnum>(filter.TypeSize);
-            var rooms = UnitOfWork.HotelRooms.FindFreeRooms(filter.CheckInDate, size, comfort);
+            var rooms = UnitOfWork.HotelRooms.FindFreeRooms(size, comfort, filter.CheckInDate, filter.CheckOutDate);
+
 
             List<FreeHotelRoomDTO> result = new List<FreeHotelRoomDTO>();
             if (!rooms.Any())  // rooms.Count() не гуд, потому что будет перебирать всю колекцию
-                return result;         
+                return result;
 
+            if (!(filter.CheckOutDate is null))
+            {
+                result = Mapper.Map<IEnumerable<HotelRoom>, List<FreeHotelRoomDTO>>(rooms);
+                foreach (var room in result)
+                {
+                    room.CheckInDate = filter.CheckInDate;
+                    room.MaxCheckOutDate = filter.CheckOutDate;
+                }
+                return result;
+            }
+                               
             foreach(var room in rooms) // search for a period of time the room is free
             {
                 DateTime? minDate = null;

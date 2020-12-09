@@ -15,12 +15,12 @@
             <select asp-for="TypeSize" asp-items="Html.GetEnumSelectList<TypeSizeEnumDTO>()" required placeholder="Size" value="@ViewBag.Room.TypeSize" />
             <input type="submit" value="Save">
         </form>*@
-        <form asp-action="Create" asp-controller="Home" asp-antiforgery="true">
-            <input type="hidden" asp-for="Number" value="@Model.HotelRoomId">
-            <input type="text" asp-for="Number" required placeholder="Name" value="@Model.Number" pattern="^[0-9]+$">
-            <input type="number" asp-for="PricePerDay" required placeholder="PricePerDay" value="@Model.PricePerDay" pattern="^[0-9]+$">
-            <select asp-for="TypeComfort" asp-items="Html.GetEnumSelectList<TypeComfortEnumDTO>()" required placeholder="Comfort" value="@Model.TypeComfort" />
-            <select asp-for="TypeSize" asp-items="Html.GetEnumSelectList<TypeSizeEnumDTO>()" required placeholder="Size" value="@Model.TypeSize" />
+        <form action="/Rooms/EditRoom" method="post">
+            <input type="hidden" name="HotelRoomId" value="@Model.HotelRoomId">
+            <input type="text" name="Number" required placeholder="Number" value="@Model.Number" pattern="^[a-zA-Z0-9]+$">
+            <input type="text" name="PricePerDay" required placeholder="PricePerDay" value="@Model.PricePerDay" pattern="^[0-9]+$">
+            @Html.DropDownList("TypeComfort", Html.GetEnumSelectList(typeof(TypeComfortEnumDTO)), @Model.TypeComfort.ToString())
+            @Html.DropDownList("TypeSize", Html.GetEnumSelectList(typeof(TypeSizeEnumDTO)), @Model.TypeSize.ToString())
             <input type="submit" value="Save">
         </form>
     </fieldset>

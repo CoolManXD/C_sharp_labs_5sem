@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HotelApp.BLL.Interfaces
 {
-    public interface IHotelService: IDisposable
+    public interface IClientOrderService: IDisposable
     {
         public IEnumerable<FreeHotelRoomDTO> SearchFreeRooms(HotelRoomSeachFilterDTO filter);
         public void AddClientActiveOrder(ActiveOrderDTO _order, ClientDTO _client);
