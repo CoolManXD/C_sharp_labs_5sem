@@ -1,6 +1,6 @@
 ﻿
-@using HotelApp.BLL.DTO
-@model HotelApp.BLL.DTO.HotelRoomDTO
+
+@model HotelRoomModel
 
 <link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
 
@@ -10,8 +10,8 @@
         <form action="/Rooms/AddRoom" method="post">
             <input type="text" name="Number" required placeholder="Number" pattern="^[a-zA-Z0-9]+$">
             <input type="text" name="PricePerDay" required placeholder="PricePerDay" pattern="^[0-9]+$">
-            @Html.DropDownList("TypeComfort", Html.GetEnumSelectList(typeof(TypeComfortEnumDTO)))
-            @Html.DropDownList("TypeSize", Html.GetEnumSelectList(typeof(TypeSizeEnumDTO)))
+            @Html.DropDownList("TypeComfort", Html.GetEnumSelectList(typeof(TypeComfortEnumModel)))
+            @Html.DropDownList("TypeSize", Html.GetEnumSelectList(typeof(TypeSizeEnumModel)))
             <input type="submit" value="Add">
         </form>
         @*<form asp-action="AddRoom" asp-controller="Rooms" asp-antiforgery="true">

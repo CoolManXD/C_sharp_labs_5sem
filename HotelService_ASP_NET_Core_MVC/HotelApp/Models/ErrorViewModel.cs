@@ -1,6 +1,6 @@
 using System;
 
-namespace WebApplication10.Models
+namespace HotelApp.Models
 {
     public class ErrorViewModel
     {

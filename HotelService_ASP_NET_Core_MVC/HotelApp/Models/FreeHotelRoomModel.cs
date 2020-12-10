@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace HotelApp.BLL.DTO
+namespace HotelApp.Models
 {
-    public class FreeHotelRoomDTO: HotelRoomDTO
+    public class FreeHotelRoomModel : HotelRoomModel
     {
         public DateTime CheckInDate { get; set; }
         public DateTime? MaxCheckOutDate { get; set; }

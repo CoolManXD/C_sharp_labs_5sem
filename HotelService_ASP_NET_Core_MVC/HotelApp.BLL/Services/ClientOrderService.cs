@@ -49,8 +49,8 @@ namespace HotelApp.BLL.Services
                 DateTime? minDate = null;
                 foreach(var date in room.ActiveOrders)
                 {
-                    if (date.ChecknInDate > filter.CheckInDate && (minDate is null || minDate > date.ChecknInDate))
-                        minDate = date.ChecknInDate;
+                    if (date.CheckInDate > filter.CheckInDate && (minDate is null || minDate > date.CheckInDate))
+                        minDate = date.CheckInDate;
                 }
                 var temp = Mapper.Map<HotelRoom, FreeHotelRoomDTO>(room);
                 temp.CheckInDate = filter.CheckInDate;
@@ -86,8 +86,8 @@ namespace HotelApp.BLL.Services
             Client client = UnitOfWork.Clients.FindByPhoneNumber(phoneNumber);
             if (!(client is null))
             {
-                PaymentStateEnum state = Mapper.Map<PaymentStateEnum>(paymentState);
-                UnitOfWork.Clients.LoadActiveOrders(client, state);
+                // PaymentStateEnum state = Mapper.Map<PaymentStateEnum>(paymentState);
+                UnitOfWork.Clients.LoadActiveOrders(client);
                 return Mapper.Map<List<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(client.ActiveOrders);
             }               
             return new List<ActiveOrderDTO>();

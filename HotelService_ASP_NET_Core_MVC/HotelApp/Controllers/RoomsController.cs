@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using HotelApp.BLL.DTO;
 using HotelApp.BLL.Interfaces;
+using HotelApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,52 +14,45 @@ namespace HotelApp.Controllers
     public class RoomsController : Controller
     {
         private readonly IHotelRoomsAdminService roomsAdminService;
-        public RoomsController(IHotelRoomsAdminService roomsAdminService)
+        private readonly IMapper mapper;
+        public RoomsController(IHotelRoomsAdminService roomsAdminService, IMapper mapper)
         {
             this.roomsAdminService = roomsAdminService;
+            this.mapper = mapper;
         }
         public IActionResult ShowRoomsPage(int pageIndex = 1)
         {
             ViewData["pageIndex"] = pageIndex;
             IEnumerable<HotelRoomDTO> rooms = roomsAdminService.ShowRoomsPage(pageIndex);
-            return View(rooms);
+            return View(mapper.Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomModel>>(rooms));
         }
-        public IActionResult AddPage()
+        [HttpGet]
+        public IActionResult AddRoom()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult AddRoom(HotelRoomDTO room)
+        public IActionResult AddRoom(HotelRoomModel room)
         {
-            roomsAdminService.AddRoom(room);
-            return Redirect("~/Rooms/ShowRoomsPage");
+            roomsAdminService.AddRoom(mapper.Map<HotelRoomDTO>(room));
+            return View("~/Views/Home/Index.cshtml");
         }
-        public IActionResult EditPage(int id)
+        [HttpGet]
+        public IActionResult EditRoom(int id)
         {
             HotelRoomDTO room = roomsAdminService.FindRoom(id);
-            //ViewBag.Room = room;
-            return View(room);
+            return View(mapper.Map<HotelRoomModel>(room));
         }
         [HttpPost]
-        public IActionResult EditRoom(HotelRoomDTO room)
+        public IActionResult EditRoom(HotelRoomModel room)
         {
-            roomsAdminService.EditRoom(room);
-            return Redirect("~/Rooms/ShowRoomsPage");
+            roomsAdminService.EditRoom(mapper.Map<HotelRoomDTO>(room));
+            return View("~/Views/Home/Index.cshtml");
         }
         public IActionResult DeleteRoom(int id)
         {
             roomsAdminService.DeleteRoom(id);
-            return Redirect("~/Rooms/ShowRoomsPage");
-        }
-        public IActionResult SearchFreeRoomsForm()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult FreeRoomsPage(HotelRoomSeachFilterDTO filter, [FromServices] IClientOrderService service)
-        {
-            var rooms = service.SearchFreeRooms(filter);
-            return View(rooms);
+            return View("~/Views/Home/Index.cshtml");
         }
     }
 }

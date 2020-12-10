@@ -55,9 +55,9 @@ namespace HotelApp.DAL.Repositories
             if (comfort != 0)
                 rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
             if (checkOutDate is null)
-                rooms = rooms.Where(p => p.ActiveOrders.All(t => t.ChecknInDate > checkInDate || t.CheckOutDate <= checkInDate));
+                rooms = rooms.Where(p => p.ActiveOrders.All(t => t.CheckInDate > checkInDate || t.CheckOutDate <= checkInDate));
             else
-                rooms = rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.ChecknInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.ChecknInDate && checkOutDate < t.CheckOutDate)));
+                rooms = rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.CheckInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.CheckInDate && checkOutDate < t.CheckOutDate)));
             return rooms.AsNoTracking().ToList();
         }
         public void LoadActiveOrders(HotelRoom room)

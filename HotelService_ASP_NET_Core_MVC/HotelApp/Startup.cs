@@ -33,8 +33,12 @@ namespace HotelApp
             services.AddControllersWithViews();
             services.AddDbContext<HotelDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddAutoMapper(p => p.AddProfile(new HotelServiceMapperProfile()));
-            //services.AddTransient<IHotelService, HotelService>();
+            services.AddAutoMapper(p =>
+            {
+                p.AddProfile(new HotelServiceMapperProfile());
+                p.AddProfile(new HotelPLMapperProfile());
+            });
+    
             services.AddScoped<IClientOrderService, ClientOrderService>();
             services.AddScoped<IHotelRoomsAdminService, HotelRoomsAdminService>();
         }

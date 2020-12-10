@@ -17,8 +17,4 @@
     <ProjectReference Include="..\HotelApp.BLL\HotelApp.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\ClientOrder\" />
-  </ItemGroup>
-
 </Project>

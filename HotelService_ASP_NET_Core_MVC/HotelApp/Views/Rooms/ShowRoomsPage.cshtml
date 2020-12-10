@@ -1,6 +1,6 @@
 ﻿
-@using HotelApp.BLL.DTO
-@model IEnumerable<HotelRoomDTO>
+
+@model IEnumerable<HotelRoomModel>
 
 <link rel="stylesheet" href="~/css/table.css" />
 
@@ -11,7 +11,7 @@
         <th>TypeSize</th>
         <th>TypeComfort</th>
     </tr>
-    @foreach (HotelRoomDTO room in Model)
+    @foreach (HotelRoomModel room in Model)
     {
         <tr>
             <td>@room.Number</td>
@@ -19,15 +19,9 @@
             <td>@room.TypeSize.ToString()</td>
             <td>@room.TypeComfort.ToString()</td>
             <td>
-                @*<form action="/Rooms/EditPage/@room.HotelRoomId">
-                    <input type="submit" value="Edit">
-                </form>*@
-                <a asp-area="" asp-controller="Rooms" asp-action="EditPage" asp-route-id="@room.HotelRoomId">Edit</a>
+                <a asp-area="" asp-controller="Rooms" asp-action="EditRoom" asp-route-id="@room.HotelRoomId">Edit</a>
             </td>
             <td>
-                @*<form action="/Rooms/DeleteRoom/@room.HotelRoomId">
-              <input type="submit" value="Delete">
-                 </form>*@
                 <a asp-area="" asp-controller="Rooms" asp-action="DeleteRoom" asp-route-id="@room.HotelRoomId">Delete</a>
             </td>
         </tr>

@@ -10,7 +10,7 @@ namespace HotelApp.DAL.Entities
         public int HotelRoomId { get; set; }
         public HotelRoom HotelRoom { get; set; }
         public PaymentStateEnum PaymentState { get; set; }
-        public DateTime ChecknInDate { get; set; }
+        public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public DateTime DateRegistration { get; set; }      
     }

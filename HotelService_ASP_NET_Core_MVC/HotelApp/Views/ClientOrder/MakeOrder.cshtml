@@ -1,0 +1,29 @@
+﻿
+
+@model ActiveOrderModel
+
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>New order</h1>
+    <fieldset>
+        <form action="/ClientOrder/MakeOrder" method="post">
+            <input type="hidden" name="order.HotelRoomId" value="@Model.HotelRoomId">
+            <input type="hidden" name="order.CheckInDate" value="@Model.CheckInDate">
+            <input type="text" name="client.FirstName" required placeholder="FirstName" pattern="^[a-zA-Z]+$">
+            <input type="text" name="client.LastName" required placeholder="LastName" pattern="^[a-zA-Z]+$">
+            <input type="text" name="client.PhoneNumber" required placeholder="PhoneNumber" pattern="^[0-9]+$">
+            @if (Model.CheckOutDate is null)
+            {
+                <input type="date" name="order.CheckOutDate" required placeholder="CheckOutDate">
+            }
+            else
+            {
+                <input type="date" name="order.CheckOutDate" value="@Model.CheckOutDate" required placeholder="CheckOutDate">
+            }
+            @Html.DropDownList("order.PaymentState", Html.GetEnumSelectList(typeof(PaymentStateEnumModel)))
+            <input type="submit" value="Accept order">
+        </form>
+        <div class="validation" asp-validation-summary="All"></div>
+    </fieldset>
+</div>
