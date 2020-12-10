@@ -1,0 +1,12 @@
+﻿
+<link rel="stylesheet" href="~/css/fields.css" media="screen" type="text/css" />
+
+<div id="login-form">
+    <h1>Client Info</h1>
+    <fieldset>
+        <form action="/ClientOrder/SearchClientOrders" method="post">
+            <input type="text" name="phoneNumber" required placeholder="phoneNumber" pattern="^[0-9]+$">
+            <input type="submit" value="Search">
+        </form>
+    </fieldset>
+</div>

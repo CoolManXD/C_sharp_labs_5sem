@@ -1,0 +1,33 @@
+﻿
+
+@model IEnumerable<HotelRoomModel>
+
+<link rel="stylesheet" href="~/css/table.css" />
+
+<table class="table_dark">
+    <tr>
+        <th>Number</th>
+        <th>PricePerDay</th>
+        <th>TypeSize</th>
+        <th>TypeComfort</th>
+    </tr>
+    @foreach (HotelRoomModel room in Model)
+    {
+        <tr>
+            <td>@room.Number</td>
+            <td>@room.PricePerDay</td>
+            <td>@room.TypeSize.ToString()</td>
+            <td>@room.TypeComfort.ToString()</td>
+            <td>
+                <a asp-area="" asp-controller="Rooms" asp-action="EditRoom" asp-route-id="@room.HotelRoomId">Edit</a>
+            </td>
+            <td>
+                <a asp-area="" asp-controller="Rooms" asp-action="DeleteRoom" asp-route-id="@room.HotelRoomId">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
+<div class="myDiv">
+    <a asp-area="" asp-controller="Rooms" asp-action="ShowRoomsPage" asp-route-pageIndex="@((int)ViewData["pageIndex"] - 1)"> < </a>
+    <a asp-area="" asp-controller="Rooms" asp-action="ShowRoomsPage" asp-route-pageIndex="@((int)ViewData["pageIndex"] + 1)"> > </a>
+</div>

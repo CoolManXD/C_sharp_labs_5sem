@@ -1,0 +1,43 @@
+﻿
+
+@model IEnumerable<FreeHotelRoomModel>
+
+<link rel="stylesheet" href="~/css/table.css" />
+
+<table class="table_dark">
+    <tr>
+        <th>Number</th>
+        <th>PricePerDay</th>
+        <th>TypeSize</th>
+        <th>TypeComfort</th>
+        <th>CheckInDate</th>
+        <th>MaxCheckOutDate</th>
+    </tr>
+    @foreach (FreeHotelRoomModel room in Model)
+    {
+        <tr>
+            <td>@room.Number</td>
+            <td>@room.PricePerDay</td>
+            <td>@room.TypeSize.ToString()</td>
+            <td>@room.TypeComfort.ToString()</td>
+            <td>@room.CheckInDate.ToString("dd.MM.yyyy")</td>
+            @if (room.MaxCheckOutDate is null)
+            {
+                <td>not occupied</td>
+                <td>
+                    <a asp-area="" asp-controller="ClientOrder" asp-action="MakeOrder" asp-route-HotelRoomId="@room.HotelRoomId"
+                       asp-route-CheckInDate="@room.CheckInDate.ToString("MM.dd.yyyy")" asp-route-CheckOutDate="@room.MaxCheckOutDate">Rent</a>
+                </td>
+            }
+            else
+            {
+
+                <td>@room.MaxCheckOutDate.Value.ToString("dd.MM.yyyy")</td>
+                <td>
+                    <a asp-area="" asp-controller="ClientOrder" asp-action="MakeOrder" asp-route-HotelRoomId="@room.HotelRoomId"
+                       asp-route-CheckInDate="@room.CheckInDate.ToString("MM.dd.yyyy")" asp-route-CheckOutDate="@room.MaxCheckOutDate.Value.ToString("MM.dd.yyyy")">Rent</a>
+                </td>
+            }
+        </tr>
+    }
+</table>

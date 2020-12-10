@@ -1,0 +1,31 @@
+﻿
+
+@model IEnumerable<ActiveOrderModel>
+
+<link rel="stylesheet" href="~/css/table.css" />
+
+<table class="table_dark">
+    <tr>
+        <th>Number</th>
+        <th>PricePerDay</th>
+        <th>CheckInDate</th>
+        <th>CheckOutDate</th>
+        <th>PaymentState</th>
+    </tr>
+    @foreach (ActiveOrderModel order in Model)
+    {
+        <tr>
+            <td>@order.HotelRoom.Number</td>
+            <td>@order.HotelRoom.PricePerDay</td>
+            <td>@order.CheckInDate.ToString("dd.MM.yyyy"))</td>
+            <td>@order.CheckOutDate.Value.ToString("dd.MM.yyyy"))</td>
+            <td>@order.PaymentState.ToString()</td>
+            @if (order.PaymentState == PaymentStateEnumModel.Booked)
+            {
+                <td>
+                    <a asp-area="" asp-controller="ClientOrder" asp-action="ConfirmPayment" asp-route-activeOrderId="@order.HotelRoomId">Pay</a>
+                </td>
+            }
+        </tr>
+    }
+</table>
