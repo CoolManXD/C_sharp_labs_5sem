@@ -43,8 +43,8 @@ namespace HotelApp.DAL.Repositories
         }
         public override void Update(HotelRoom item)
         {
-            item.TypeComfortId = context.Set<TypeComfort>().Where(p => p.Comfort == item.TypeComfort.Comfort).Select(p => p.TypeComfortId).SingleOrDefault();
-            item.TypeSizeId = context.Set<TypeSize>().Where(p => p.Size == item.TypeSize.Size).Select(p => p.TypeSizeId).SingleOrDefault();
+            item.TypeComfort = context.Set<TypeComfort>().Where(p => p.Comfort == item.TypeComfort.Comfort).SingleOrDefault();
+            item.TypeSize = context.Set<TypeSize>().Where(p => p.Size == item.TypeSize.Size).SingleOrDefault();
             context.Update(item);
         }
         public IEnumerable<HotelRoom> FindFreeRooms(TypeSizeEnum size, TypeComfortEnum comfort, DateTime checkInDate, DateTime? checkOutDate = null)

@@ -37,7 +37,25 @@ namespace HotelApp.Controllers
             return new ObjectResult(roomsPageViewModel);
         }
 
-        [HttpPost("AddRoom")]
+        [HttpGet("FreeRooms")]
+        public IActionResult GetFreeRooms([FromQuery] HotelRoomSeachFilterModel filter, [FromServices] IClientOrderService clientOrderService)
+        {
+            if (filter is null)
+                return BadRequest();
+            if (filter.CheckOutDate != null && filter.CheckInDate >= filter.CheckOutDate)
+                ModelState.AddModelError("", "CheckInDate can't be more or equal than CheckOutDate");
+            if (filter.CheckInDate.Date < DateTime.Today)
+                ModelState.AddModelError("", "CheckInDate can't be less than current date");
+            if (ModelState.IsValid)
+            {
+                IEnumerable<FreeHotelRoomDTO> rooms = clientOrderService.SearchFreeRooms(mapper.Map<HotelRoomSeachFilterDTO>(filter));
+                return new ObjectResult(mapper.Map<IEnumerable<FreeHotelRoomDTO>, IEnumerable<FreeHotelRoomModel>>(rooms));
+            }
+            return BadRequest();
+        }
+
+        //[HttpPost("AddRoom")]
+        [HttpPost]
         public IActionResult PostAddRoom(HotelRoomModel room)
         {
             if (room is null)
@@ -46,7 +64,8 @@ namespace HotelApp.Controllers
             return Ok();
         }
 
-        [HttpGet("EditRoom/{id}")]
+        //[HttpGet("EditRoom/{id}")]
+        [HttpGet("{id}")]
         public IActionResult GetEditRoom(int id)
         {
             HotelRoomDTO room = roomsAdminService.FindRoom(id);
@@ -55,7 +74,8 @@ namespace HotelApp.Controllers
             return new ObjectResult(mapper.Map<HotelRoomModel>(room));
         }
 
-        [HttpPut("EditRoom")]
+        //[HttpPut("EditRoom")]
+        [HttpPut]
         public IActionResult PutEditRoom(HotelRoomModel room)
         {
             if (room is null)
@@ -64,7 +84,8 @@ namespace HotelApp.Controllers
             return Ok();
         }
 
-        [HttpDelete("DeleteRoom/{id}")]
+        //[HttpDelete("DeleteRoom/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteRoom(int id)
         {
             if (roomsAdminService.FindRoom(id) is null)
