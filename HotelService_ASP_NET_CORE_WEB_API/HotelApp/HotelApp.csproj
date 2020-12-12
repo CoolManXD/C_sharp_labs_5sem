@@ -13,9 +13,5 @@
     <ProjectReference Include="..\HotelApp.BLL\HotelApp.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\Clients\" />
-  </ItemGroup>
-
 
 </Project>
