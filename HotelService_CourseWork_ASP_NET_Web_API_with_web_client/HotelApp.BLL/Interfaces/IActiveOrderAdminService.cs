@@ -9,8 +9,9 @@ namespace HotelApp.BLL.Interfaces
     {
         public IEnumerable<ActiveOrderDTO> FindOrders();
         public ActiveOrderDTO FindOrder(int orderId);
-        public bool InsertOrder(ActiveOrderDTO order);
+        public ActiveOrderDTO InsertOrder(ActiveOrderDTO order);
         public bool UpdateOrder(ActiveOrderDTO order);
         public bool DeleteOrder(int deleteOrderId);
+        public void ConfirmPayment(int activeOrderId);
     }
 }

@@ -9,9 +9,10 @@ namespace HotelApp.BLL.Interfaces
     {
         public IEnumerable<HotelDTO> FindHotels();
         public HotelDTO FindHotel(int hotelId);
-        public bool InsertHotel(HotelDTO hotel);
+        public HotelDTO InsertHotel(HotelDTO hotel);
         public bool UpdateHotel(HotelDTO hotel);
         public bool DeleteHotel(int deleteHotelId);
         public IEnumerable<ActiveOrderDTO> GetHotelOrderPeriod(int hotelId, DateTime start, DateTime end);
+        public InfoHotelDTO GetHotelInfo(int hotelId);
     }
 }

@@ -1,11 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using HotelApp.BLL.DTO;
 using HotelApp.BLL.Interfaces;
 using HotelApp.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-
 
 namespace HotelApp.Controllers
 {
@@ -13,44 +15,90 @@ namespace HotelApp.Controllers
     [Route("api/[controller]")]
     public class ClientsController : ControllerBase
     {
-        private readonly IClientOrderService clientOrderService;
+        private readonly IClientAdminService clientAdminService;
         private readonly IMapper mapper;
-        public ClientsController(IClientOrderService clientOrderService, IMapper mapper)
+        public ClientsController(IClientAdminService clientAdminService, IMapper mapper)
         {
-            this.clientOrderService = clientOrderService;
+            this.clientAdminService = clientAdminService;
             this.mapper = mapper;
         }
-        //[HttpGet("ClientOrders")]
-        [HttpGet("Orders")]
-        public IActionResult GetClientOrders([FromQuery] string phoneNumber)
+        [HttpGet]
+        public IActionResult GetClients()
         {
-            IEnumerable<ActiveOrderDTO> orders = clientOrderService.FindClientActiveOrders(phoneNumber);
-            return new ObjectResult(mapper.Map<IEnumerable<ActiveOrderDTO>, IEnumerable<ActiveOrderModel>>(orders));
+            IEnumerable<ClientDTO> clients = clientAdminService.FindClients();
+            return Ok(mapper.Map<IEnumerable<ClientDTO>, IEnumerable<ClientModel>>(clients));
+        }
+        [HttpGet("{id}")]
+        public IActionResult GetClient(int id)
+        {
+            ClientDTO client = clientAdminService.FindClient(id);
+            if (client is null)
+                return NotFound();
+            return Ok(mapper.Map<ClientModel>(client));
+        }
+        [HttpGet("phone")]
+        public IActionResult GetClientByPhoneNumber([FromQuery] string phoneNumber)
+        {
+            ClientDTO client = clientAdminService.FindClient(phoneNumber);
+            if (client is null)
+                return NotFound();
+            return Ok(mapper.Map<ClientModel>(client));
+        }
+        [HttpPost]
+        public IActionResult PostClient(ClientModel client)
+        {
+            if (client is null)
+                return BadRequest(new ArgumentNullException(nameof(client)));
+            if(clientAdminService.IsClientExist(client.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Phone number is busy");
+                return BadRequest(ModelState);
+            }
+                 
+            var newClient = clientAdminService.InsertClient(mapper.Map<ClientDTO>(client));
+            return CreatedAtAction(nameof(GetClient), new { id = newClient.ClientId }, newClient);
+        }
+        [HttpPut]
+        public IActionResult PutClient(ClientModel client)
+        {
+            if (client is null)
+                return BadRequest(new ArgumentNullException(nameof(client)));
+            if (clientAdminService.UpdateClient(mapper.Map<ClientDTO>(client)))
+                return Ok();
+            else
+                return NotFound();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteClient(int id)
+        {
+            if (clientAdminService.DeleteClient(id))
+                return NoContent();
+            else
+                return NotFound();
         }
 
-        //[HttpPost("MakeOrder")]
-        [HttpPost("Orders")]
+        [HttpGet("orders")]
+        public IActionResult GetClientOrders([FromQuery] string phoneNumber, [FromQuery] PaymentStateEnumModel paymentState = default)
+        {
+            IEnumerable<ActiveOrderDTO> orders = clientAdminService.FindClientActiveOrders(phoneNumber, mapper.Map<PaymentStateEnumDTO>(paymentState));
+            return new ObjectResult(mapper.Map<IEnumerable<ActiveOrderDTO>, IEnumerable<ActiveOrderModel>>(orders));
+        }
+        [HttpPost("orders")]
         public IActionResult PostOrder(ClientOrderViewModel request)
         {
             if (request is null || request.Client is null || request.Order is null)
-                return BadRequest();
+                return BadRequest(new ArgumentNullException(nameof(request)));
             if (request.Order.CheckOutDate != null && request.Order.CheckInDate >= request.Order.CheckOutDate)
                 ModelState.AddModelError("", "CheckInDate can't be more or equal than CheckOutDate");
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             ClientDTO client = mapper.Map<ClientDTO>(request.Client);
             ActiveOrderDTO order = mapper.Map<ActiveOrderDTO>(request.Order);
-            clientOrderService.AddClientActiveOrder(order, client);
-            return Ok();
-        }
-
-        //[HttpPut("ConfirmPayment/{activeOrderId}")]
-        [HttpPut("Orders/{activeOrderId}")]
-        public IActionResult PutConfirmPayment(int activeOrderId)
-        {
-            clientOrderService.ConfirmPayment(activeOrderId);
-            return Ok();
+            ActiveOrderDTO newOrder = clientAdminService.AddClientActiveOrder(client, order);
+            //return CreatedAtAction(nameof(GetClient), new { id = newOrder.ActiveOrderId }, newOrder);
+            
+            return Created(new Uri($"/api/orders/{newOrder.ActiveOrderId}", UriKind.Relative), newOrder);
         }
     }
 }

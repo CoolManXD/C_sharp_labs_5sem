@@ -7,11 +7,12 @@ namespace HotelApp.BLL.Interfaces
 {
     public interface IHotelRoomsAdminService: IDisposable
     {
-        public int RoomsQuantity { get; }
-        public IEnumerable<HotelRoomDTO> ShowRoomsPage(int pageIndex = 1, int pageSize = 3, int hotelId = 0);
+        public IEnumerable<FreeHotelRoomDTO> SearchFreeRooms(HotelRoomSeachFilterDTO filter);
+        public PageDTO<HotelRoomDTO> ShowRoomsPage(int pageIndex = 1, int pageSize = 5, int hotelId = 0);
         public HotelRoomDTO FindRoom(int hotelRoomId);
-        public bool InsertRoom(HotelRoomDTO room);
+        public HotelRoomDTO InsertRoom(HotelRoomDTO room);
         public bool UpdateRoom(HotelRoomDTO room);
-        public bool DeleteRoom(int deleteRoomId); 
+        public bool DeleteRoom(int deleteRoomId);
+        public IEnumerable<HotelRoomDTO> FindRoomsByHotelId(int hotelId);
     }
 }

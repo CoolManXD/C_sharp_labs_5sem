@@ -9,8 +9,12 @@ namespace HotelApp.BLL.Interfaces
     {
         public IEnumerable<ClientDTO> FindClients();
         public ClientDTO FindClient(int clientId);
-        public bool InsertClient(ClientDTO client);
+        public ClientDTO FindClient(string phoneNumber);
+        public ClientDTO InsertClient(ClientDTO client);
         public bool UpdateClient(ClientDTO client);
         public bool DeleteClient(int deleteClientId);
+        public ActiveOrderDTO AddClientActiveOrder(ClientDTO _client, ActiveOrderDTO _order);
+        public IEnumerable<ActiveOrderDTO> FindClientActiveOrders(string phoneNumber, PaymentStateEnumDTO paymentState = default);
+        public bool IsClientExist(string phoneNumber);
     }
 }

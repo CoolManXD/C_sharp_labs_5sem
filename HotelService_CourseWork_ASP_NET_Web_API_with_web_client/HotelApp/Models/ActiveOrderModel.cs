@@ -5,6 +5,7 @@ namespace HotelApp.Models
     public class ActiveOrderModel
     {
         public int ActiveOrderId { get; set; }
+        public int ClientId { get; set; }
         public int HotelRoomId { get; set; }
         public HotelRoomModel HotelRoom { get; set; }
         public PaymentStateEnumModel PaymentState { get; set; }

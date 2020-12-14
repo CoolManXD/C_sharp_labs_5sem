@@ -35,19 +35,19 @@ namespace HotelApp.BLL.Services
             }               
             return null;
         }
-        public bool InsertOrder(ActiveOrderDTO order)
+        public ActiveOrderDTO InsertOrder(ActiveOrderDTO order)
         {
             if (order is null)
-                throw new ArgumentNullException("order");
+                throw new ArgumentNullException(nameof(order));
             ActiveOrder newOrder = Mapper.Map<ActiveOrder>(order);
             UnitOfWork.ActiveOrders.Insert(newOrder);
             UnitOfWork.Save();
-            return true;
+            return Mapper.Map<ActiveOrderDTO>(newOrder);
         }
         public bool UpdateOrder(ActiveOrderDTO order)
         {
             if (order is null)
-                throw new ArgumentNullException("order");
+                throw new ArgumentNullException(nameof(order));
             if (!UnitOfWork.Clients.CheckAvailability(order.ActiveOrderId))
                 return false;
             ActiveOrder editOrder = Mapper.Map<ActiveOrder>(order);
@@ -63,9 +63,20 @@ namespace HotelApp.BLL.Services
             UnitOfWork.Save();
             return true;
         }
+        public void ConfirmPayment(int activeOrderId)
+        {
+            ActiveOrder order = UnitOfWork.ActiveOrders.FindById(activeOrderId);
+            if (!(order is null))
+            {
+                order.PaymentState = PaymentStateEnum.P;
+                UnitOfWork.ActiveOrders.Update(order);
+                UnitOfWork.Save();
+            }
+        }
         public void Dispose()
         {
             UnitOfWork.Dispose();
         }
+
     }
 }

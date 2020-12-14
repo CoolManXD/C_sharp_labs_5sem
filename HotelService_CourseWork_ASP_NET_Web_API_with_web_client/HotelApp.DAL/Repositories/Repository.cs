@@ -42,6 +42,7 @@ namespace HotelApp.DAL.Repositories
         public virtual void Insert(TEntity item)
         {
             context.Add<TEntity>(item);
+            //return item;
         }
         public virtual void Update(TEntity item)
         {

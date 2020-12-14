@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <a href="../index.html" class="logo">Hotel Service</a>
+        <a href="../ManagePage.html" class="logo"></a>
         <nav>
             <ul class="topmenu">
                 <li>
@@ -19,7 +19,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="" class="submenu-link">Clients</a>
+                    <a href="" class="submenu-link">Orders</a>
                     <ul class="submenu">
                         <li><a href="./SearchFreeRooms.html">Make order</a></li>
                         <li><a href="./SearchClientOrders.html">Look orders</a></li>
@@ -134,12 +134,12 @@
             rentLink.addEventListener("click", e => {
 
                 e.preventDefault();
-                let orderDatail = {
+                let orderDetail = {
                     hotelRoomId: room.hotelRoomId,
                     checkInDate: room.checkInDate,
                     maxCheckOutDate: room.maxCheckOutDate
                 }
-                localStorage.setItem('orderDatail', JSON.stringify(orderDatail));
+                localStorage.setItem('orderDetail', JSON.stringify(orderDetail));
                 window.location.href = './MakeOrder.html';
             });
             linksTd.append(rentLink);
@@ -148,6 +148,9 @@
 
             return tr;
         }
+
+        let title = document.querySelector("a");
+        title.innerHTML = localStorage['hotelName'];
 
         let myData = JSON.parse(localStorage['freeRooms']);
         let rows = document.querySelector("tbody");

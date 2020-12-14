@@ -5,7 +5,7 @@ namespace HotelApp.BLL.DTO
     public class ActiveOrderDTO
     {
         public int ActiveOrderId { get; set; }
-        // public int ClientId { get; set; }
+        public int ClientId { get; set; }
         // public ClientDTO Client { get; set; }
         public int HotelRoomId { get; set; }
         public HotelRoomDTO HotelRoom { get; set; }
@@ -16,7 +16,8 @@ namespace HotelApp.BLL.DTO
 
     public enum PaymentStateEnumDTO : byte
     {
-        P = 1,
+        Undefined = 0,
+        P,
         B
     }
 }

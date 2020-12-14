@@ -24,7 +24,7 @@ namespace HotelApp.BLL.Infrastructure
 
             CreateMap<Hotel, HotelDTO>().ReverseMap();
             CreateMap<Client, ClientDTO>().ReverseMap();
-            CreateMap<PaymentStateEnum, PaymentStateEnumDTO>().ConvertUsingEnumMapping(p => p.MapByName()).ReverseMap();
+            CreateMap<PaymentStateEnumDTO, PaymentStateEnum>().ConvertUsingEnumMapping(p => p.MapByName().MapValue(PaymentStateEnumDTO.Undefined, default)).ReverseMap();
             CreateMap<ActiveOrderDTO, ActiveOrder>().ReverseMap();
         }
     }

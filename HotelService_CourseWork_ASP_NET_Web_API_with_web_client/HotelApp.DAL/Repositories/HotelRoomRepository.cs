@@ -47,19 +47,6 @@ namespace HotelApp.DAL.Repositories
             item.TypeSize = context.Set<TypeSize>().Where(p => p.Size == item.TypeSize.Size).SingleOrDefault();
             context.Update(item);
         }
-        public IEnumerable<HotelRoom> FindFreeRooms(TypeSizeEnum size, TypeComfortEnum comfort, DateTime checkInDate, DateTime? checkOutDate = null)
-        {
-            IQueryable<HotelRoom> rooms = context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders);
-            if (size != 0)
-                rooms = rooms.Where(p => p.TypeSize.Size == size);
-            if (comfort != 0)
-                rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
-            if (checkOutDate is null)
-                rooms = rooms.Where(p => p.ActiveOrders.All(t => t.CheckInDate > checkInDate || t.CheckOutDate <= checkInDate));
-            else
-                rooms = rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.CheckInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.CheckInDate && checkOutDate < t.CheckOutDate)));
-            return rooms.AsNoTracking().ToList();
-        }
         public void LoadHotel(HotelRoom room)
         {
             context.Entry(room).Reference(p => p.Hotel).Load();
@@ -72,21 +59,36 @@ namespace HotelApp.DAL.Repositories
         {
             context.Entry(room).Collection(p => p.Clients).Load();
         }
-        public IEnumerable<HotelRoom> GetRoomsPage(int pageIndex, int pageSize = 5, int hotelId = 0)
-        {
-            IQueryable<HotelRoom> rooms = context.HotelRooms;
-            if (hotelId != 0)
-                rooms = rooms.Where(p => p.HotelId == hotelId);
-            return rooms.Include(p => p.TypeComfort).Include(p => p.TypeSize)
-                .OrderBy(p => p.Number)
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .AsNoTracking()
-                .ToList();
-        }
         public override bool CheckAvailability(int id)
         {
             return context.HotelRooms.Any(p => p.HotelRoomId == id);
         }
+
+        //public IEnumerable<HotelRoom> FindFreeRooms(TypeSizeEnum size, TypeComfortEnum comfort, DateTime checkInDate, DateTime? checkOutDate = null)
+        //{
+        //    IQueryable<HotelRoom> rooms = context.HotelRooms.Include(p => p.TypeComfort).Include(p => p.TypeSize).Include(p => p.ActiveOrders);
+        //    if (size != 0)
+        //        rooms = rooms.Where(p => p.TypeSize.Size == size);
+        //    if (comfort != 0)
+        //        rooms = rooms.Where(p => p.TypeComfort.Comfort == comfort);
+        //    if (checkOutDate is null)
+        //        rooms = rooms.Where(p => p.ActiveOrders.All(t => t.CheckInDate > checkInDate || t.CheckOutDate <= checkInDate));
+        //    else
+        //        rooms = rooms.Where(p => p.ActiveOrders.All(t => (checkInDate > t.CheckInDate && checkInDate >= t.CheckOutDate) || (checkOutDate <= t.CheckInDate && checkOutDate < t.CheckOutDate)));
+        //    return rooms.AsNoTracking().ToList();
+        //}
+        //public IEnumerable<HotelRoom> GetRoomsPage(int pageIndex, int pageSize = 5, int hotelId = 0)
+        //{
+        //    IQueryable<HotelRoom> rooms = context.HotelRooms;
+        //    if (hotelId != 0)
+        //        rooms = rooms.Where(p => p.HotelId == hotelId);
+        //    return rooms.Include(p => p.TypeComfort).Include(p => p.TypeSize)
+        //        .OrderBy(p => p.Number)
+        //        .Skip((pageIndex - 1) * pageSize)
+        //        .Take(pageSize)
+        //        .AsNoTracking()
+        //        .ToList();
+        //}
+
     }
 }

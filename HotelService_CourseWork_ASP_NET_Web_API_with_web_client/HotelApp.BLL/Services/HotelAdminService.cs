@@ -35,19 +35,19 @@ namespace HotelApp.BLL.Services
             }               
             return null;
         }
-        public bool InsertHotel(HotelDTO hotel)
+        public HotelDTO InsertHotel(HotelDTO hotel)
         {
             if (hotel is null)
-                throw new ArgumentNullException("hotel");
+                throw new ArgumentNullException(nameof(hotel));
             Hotel newHotel = Mapper.Map<Hotel>(hotel);
             UnitOfWork.Hotels.Insert(newHotel);
             UnitOfWork.Save();
-            return true;
+            return Mapper.Map<HotelDTO>(newHotel);
         }
         public bool UpdateHotel(HotelDTO hotel)
         {
             if (hotel is null)
-                throw new ArgumentNullException("hotel");
+                throw new ArgumentNullException(nameof(hotel));
             if (!UnitOfWork.Hotels.CheckAvailability(hotel.HotelId))
                 return false;
             Hotel editHotel = Mapper.Map<Hotel>(hotel);
@@ -68,6 +68,15 @@ namespace HotelApp.BLL.Services
             IEnumerable<ActiveOrder> orders = UnitOfWork.ActiveOrders.GetQuery().Include(p => p.HotelRoom).Where(p => p.CheckInDate >= start && p.CheckInDate <= end)
                 .Where(p => p.HotelRoom.HotelId == hotelId).ToList();
             return Mapper.Map<IEnumerable<ActiveOrder>,IEnumerable<ActiveOrderDTO>>(orders);
+        }
+        public InfoHotelDTO GetHotelInfo(int hotelId)
+        {
+            if (!UnitOfWork.Hotels.CheckAvailability(hotelId))
+                return null;
+            int paidOrders = UnitOfWork.ActiveOrders.GetQuery().Where(p => p.HotelRoom.HotelId == hotelId).Where(p => p.PaymentState == PaymentStateEnum.P).Count();
+            int bookedOrders = UnitOfWork.ActiveOrders.GetQuery().Where(p => p.HotelRoom.HotelId == hotelId).Where(p => p.PaymentState == PaymentStateEnum.B).Count();
+            int rooms = UnitOfWork.HotelRooms.GetQuery().Where(p => p.HotelId == hotelId).Count();
+            return new InfoHotelDTO { quantityRooms = rooms, quantityPaidOrders = paidOrders, quantityBookedOrders = bookedOrders };
         }
         public void Dispose()
         {

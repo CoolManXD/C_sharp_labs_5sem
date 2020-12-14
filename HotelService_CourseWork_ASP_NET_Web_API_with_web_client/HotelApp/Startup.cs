@@ -41,9 +41,10 @@ namespace HotelApp
                 p.AddProfile(new HotelServiceMapperProfile());
                 p.AddProfile(new HotelPLMapperProfile());
             });
-
-            services.AddScoped<IClientOrderService, ClientOrderService>();
+            services.AddScoped<IHotelAdminService, HotelAdminService>();
             services.AddScoped<IHotelRoomsAdminService, HotelRoomsAdminService>();
+            services.AddScoped<IClientAdminService, ClientAdminService>();
+            services.AddScoped<IActiveOrderAdminService, ActiveOrderAdminService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

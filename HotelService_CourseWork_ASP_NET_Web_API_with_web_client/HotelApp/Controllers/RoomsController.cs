@@ -22,76 +22,78 @@ namespace HotelApp.Controllers
             this.roomsAdminService = roomsAdminService;
             this.mapper = mapper;
         }
-
-        [HttpGet("Page/{pageIndex?}")]
-        public IActionResult GetRoomsPage(int pageIndex = 1)
+        [HttpGet]
+        public IActionResult GetHotelRooms([FromQuery] int hotelId)
         {
-            var count = roomsAdminService.RoomsQuantity;
-            PageViewModel pageViewModel = new PageViewModel(count, pageIndex, 3);
-            IEnumerable<HotelRoomDTO> rooms = roomsAdminService.ShowRoomsPage(pageIndex, 3);
+            IEnumerable<HotelRoomDTO> hotels = roomsAdminService.FindRoomsByHotelId(hotelId);
+            return Ok(mapper.Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomModel>>(hotels));
+        }
+        [HttpGet("{id?}")]
+        public IActionResult GetHotelRoom(int id)
+        {
+            HotelRoomDTO room = roomsAdminService.FindRoom(id);
+            if (room is null)
+                return NotFound();
+            return Ok(mapper.Map<HotelRoomModel>(room));
+        }
+        [HttpPost]
+        public IActionResult PostHotelRoom(HotelRoomModel room)
+        {
+            if (room is null)
+                return BadRequest(new ArgumentNullException(nameof(room)));
+            var newRoom = roomsAdminService.InsertRoom(mapper.Map<HotelRoomDTO>(room));
+            return CreatedAtAction(nameof(GetHotelRoom), new { id = newRoom.HotelId }, newRoom);
+        }
+        [HttpPut]
+        public IActionResult PutHotelRoom(HotelRoomModel room)
+        {
+            if (room is null)
+                return BadRequest(new ArgumentNullException(nameof(room)));
+            if (roomsAdminService.UpdateRoom(mapper.Map<HotelRoomDTO>(room)))
+                return Ok();
+            else
+                return NotFound();
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteHotelRoom(int id)
+        {
+            if (roomsAdminService.DeleteRoom(id))
+                return NoContent();
+            else
+                return NotFound();
+        }
+
+        [HttpGet("page/{pageIndex}")]
+        public IActionResult GetRoomsPage(int pageIndex = 1, [FromQuery] int hotelId = 0)
+        {
+            PageDTO<HotelRoomDTO> page = roomsAdminService.ShowRoomsPage(pageIndex, 5, hotelId);
+
+            PageViewModel pageViewModel = new PageViewModel(page.Count, pageIndex, 3);
+            
             RoomsPageViewModel roomsPageViewModel = new RoomsPageViewModel
             {
-                HotelRooms = mapper.Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomModel>>(rooms),
+                HotelRooms = mapper.Map<IEnumerable<HotelRoomDTO>, IEnumerable<HotelRoomModel>>(page.Items),
                 PageViewModel = pageViewModel
             };
             return new ObjectResult(roomsPageViewModel);
         }
 
-        [HttpGet("FreeRooms")]
-        public IActionResult GetFreeRooms([FromQuery] HotelRoomSeachFilterModel filter, [FromServices] IClientOrderService clientOrderService)
+        [HttpGet("free")]
+        public IActionResult GetFreeRooms([FromQuery] HotelRoomSeachFilterModel filter)
         {
             if (filter is null)
-                return BadRequest();
+                return BadRequest(new ArgumentNullException(nameof(filter)));
             if (filter.CheckOutDate != null && filter.CheckInDate >= filter.CheckOutDate)
                 ModelState.AddModelError("", "CheckInDate can't be more or equal than CheckOutDate");
             if (filter.CheckInDate.Date < DateTime.Today)
                 ModelState.AddModelError("", "CheckInDate can't be less than current date");
             if (ModelState.IsValid)
             {
-                IEnumerable<FreeHotelRoomDTO> rooms = clientOrderService.SearchFreeRooms(mapper.Map<HotelRoomSeachFilterDTO>(filter));
+                IEnumerable<FreeHotelRoomDTO> rooms = roomsAdminService.SearchFreeRooms(mapper.Map<HotelRoomSeachFilterDTO>(filter));
                 return new ObjectResult(mapper.Map<IEnumerable<FreeHotelRoomDTO>, IEnumerable<FreeHotelRoomModel>>(rooms));
             }
-            return BadRequest();
+            return BadRequest(ModelState);
         }
-
-        //[HttpPost("AddRoom")]
-        [HttpPost]
-        public IActionResult PostAddRoom(HotelRoomModel room)
-        {
-            if (room is null)
-                return BadRequest();
-            //roomsAdminService.AddRoom(mapper.Map<HotelRoomDTO>(room));
-            return Ok();
-        }
-
-        //[HttpGet("EditRoom/{id}")]
-        [HttpGet("{id}")]
-        public IActionResult GetEditRoom(int id)
-        {
-            HotelRoomDTO room = roomsAdminService.FindRoom(id);
-            if (room is null)
-                return NotFound();
-            return new ObjectResult(mapper.Map<HotelRoomModel>(room));
-        }
-
-        //[HttpPut("EditRoom")]
-        [HttpPut]
-        public IActionResult PutEditRoom(HotelRoomModel room)
-        {
-            if (room is null)
-                return BadRequest();
-            //roomsAdminService.EditRoom(mapper.Map<HotelRoomDTO>(room));
-            return Ok();
-        }
-
-        //[HttpDelete("DeleteRoom/{id}")]
-        [HttpDelete("{id}")]
-        public IActionResult DeleteRoom(int id)
-        {
-            if (roomsAdminService.FindRoom(id) is null)
-                return NotFound();
-            roomsAdminService.DeleteRoom(id);
-            return Ok();
-        }
+        
     }
 }
