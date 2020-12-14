@@ -65,8 +65,10 @@ namespace HotelApp.Controllers
         [HttpPut("{id}/paid")]
         public IActionResult PutConfirmPayment(int id)
         {
-            orderAdminService.ConfirmPayment(id);
-            return Ok();
+            if(orderAdminService.ConfirmPayment(id))
+                return Ok();
+            else
+                return NotFound();
         }
     }
 }

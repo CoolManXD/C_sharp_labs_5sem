@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HotelApp.DAL.EF
+namespace HotelApp.DAL.EF.Configuration
 {
     class HotelRoomConfiguration: IEntityTypeConfiguration<HotelRoom>
     {

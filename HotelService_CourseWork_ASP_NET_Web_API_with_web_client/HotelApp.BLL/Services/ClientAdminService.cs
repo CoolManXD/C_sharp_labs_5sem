@@ -20,9 +20,33 @@ namespace HotelApp.BLL.Services
             UnitOfWork = unitOfWork;
             Mapper = mapper;
         }
-        public IEnumerable<ClientDTO> FindClients()
+        public IEnumerable<ClientDTO> FindClients(ClientFilterDTO filter)
         {
-            IEnumerable<Client> clients = UnitOfWork.Clients.FindAll(false);
+            IEnumerable<Client> clients;
+            if (filter is null)
+            {
+                clients = UnitOfWork.Clients.FindAll(false).OrderBy(p => p.LastName);
+                return Mapper.Map<IEnumerable<Client>, IEnumerable<ClientDTO>>(clients);
+            }
+            if (!string.IsNullOrEmpty(filter.Keyword))
+                clients = UnitOfWork.Clients.Find(p => p.FirstName.Contains(filter.Keyword) || p.LastName.Contains(filter.Keyword), false);
+            else
+                clients = UnitOfWork.Clients.FindAll(false);
+            switch (filter.SortState)
+            {
+                case SortClientEnumDTO.LastNameAsc:
+                    clients = clients.OrderBy(p => p.LastName);
+                    break;
+                case SortClientEnumDTO.LastNameDesc:
+                    clients = clients.OrderByDescending(p => p.LastName);
+                    break;
+                case SortClientEnumDTO.FirstNameAsc:
+                    clients = clients.OrderBy(p => p.FirstName);
+                    break;
+                case SortClientEnumDTO.FirstNameDesc:
+                    clients = clients.OrderByDescending(p => p.FirstName);
+                    break;
+            }
             return Mapper.Map<IEnumerable<Client>, IEnumerable<ClientDTO>>(clients);
         }
         public ClientDTO FindClient(int clientId)
@@ -30,7 +54,7 @@ namespace HotelApp.BLL.Services
             Client client = UnitOfWork.Clients.FindById(clientId);
             if (!(client is null))
             {
-                UnitOfWork.Clients.LoadActiveOrders(client);
+                UnitOfWork.Clients.LoadActiveOrdersWithRooms(client);
                 return Mapper.Map<ClientDTO>(client);
             }               
             return null;

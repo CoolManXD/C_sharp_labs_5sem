@@ -7,7 +7,7 @@ namespace HotelApp.BLL.Interfaces
 {
     public interface IClientAdminService: IDisposable
     {
-        public IEnumerable<ClientDTO> FindClients();
+        public IEnumerable<ClientDTO> FindClients(ClientFilterDTO filter);
         public ClientDTO FindClient(int clientId);
         public ClientDTO FindClient(string phoneNumber);
         public ClientDTO InsertClient(ClientDTO client);

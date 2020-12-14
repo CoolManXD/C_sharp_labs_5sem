@@ -63,7 +63,7 @@ namespace HotelApp.BLL.Services
             UnitOfWork.Save();
             return true;
         }
-        public void ConfirmPayment(int activeOrderId)
+        public bool ConfirmPayment(int activeOrderId)
         {
             ActiveOrder order = UnitOfWork.ActiveOrders.FindById(activeOrderId);
             if (!(order is null))
@@ -71,7 +71,9 @@ namespace HotelApp.BLL.Services
                 order.PaymentState = PaymentStateEnum.P;
                 UnitOfWork.ActiveOrders.Update(order);
                 UnitOfWork.Save();
+                return true;
             }
+            return false;
         }
         public void Dispose()
         {

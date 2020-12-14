@@ -20,9 +20,13 @@ namespace HotelApp.BLL.Services
             UnitOfWork = unitOfWork;
             Mapper = mapper;
         }
-        public IEnumerable<HotelDTO> FindHotels()
+        public IEnumerable<HotelDTO> FindHotels(string keyword = "")
         {
-            IEnumerable<Hotel> hotels = UnitOfWork.Hotels.FindAll(false);
+            IEnumerable<Hotel> hotels;
+            if (string.IsNullOrWhiteSpace(keyword))
+                hotels = UnitOfWork.Hotels.FindAll(false);
+            else
+                hotels = UnitOfWork.Hotels.Find(p => p.Name.Contains(keyword) || p.Address.Contains(keyword), false);
             return Mapper.Map<IEnumerable<Hotel>, IEnumerable<HotelDTO>>(hotels);
         }
         public HotelDTO FindHotel(int hotelId)
@@ -63,11 +67,24 @@ namespace HotelApp.BLL.Services
             UnitOfWork.Save();
             return true;
         }
-        public IEnumerable<ActiveOrderDTO> GetHotelOrderPeriod(int hotelId, DateTime start, DateTime end)
+        public IEnumerable<ActiveOrderDTO> GetHotelOrders(int hotelId, OrderFilterDTO filter)
         {
-            IEnumerable<ActiveOrder> orders = UnitOfWork.ActiveOrders.GetQuery().Include(p => p.HotelRoom).Where(p => p.CheckInDate >= start && p.CheckInDate <= end)
-                .Where(p => p.HotelRoom.HotelId == hotelId).ToList();
-            return Mapper.Map<IEnumerable<ActiveOrder>,IEnumerable<ActiveOrderDTO>>(orders);
+            if (filter is null)
+                throw new ArgumentNullException(nameof(filter));
+            IEnumerable<ActiveOrder> orders = UnitOfWork.ActiveOrders.GetQuery().Include(p => p.HotelRoom).ThenInclude(p => p.TypeComfort).Include(p => p.HotelRoom).ThenInclude(p => p.TypeSize)
+                 .Where(p => p.HotelRoom.HotelId == hotelId);
+            if (filter.PaymentState != 0)
+            {
+                orders = orders.Where(p => p.PaymentState == Mapper.Map<PaymentStateEnum>(filter.PaymentState))
+                .Where(p => p.HotelRoom.HotelId == hotelId).OrderBy(p => p.CheckInDate).ToList();
+                return Mapper.Map<IEnumerable<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(orders);
+            }
+            else
+            {
+                orders = orders.Where(p => p.CheckInDate >= filter.Start && p.CheckInDate <= filter.End)
+                .OrderBy(p => p.CheckInDate).ToList();
+                return Mapper.Map<IEnumerable<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(orders);
+            }           
         }
         public InfoHotelDTO GetHotelInfo(int hotelId)
         {

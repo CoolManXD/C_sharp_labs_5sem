@@ -15,7 +15,8 @@ namespace HotelApp.Models
 
     public enum PaymentStateEnumModel : byte
     {
-        Paid = 1,
+        Undefined = 0,
+        Paid ,
         Booked
     }
 }

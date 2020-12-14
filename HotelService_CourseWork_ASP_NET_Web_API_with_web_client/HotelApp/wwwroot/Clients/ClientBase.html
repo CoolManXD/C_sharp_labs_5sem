@@ -29,6 +29,22 @@
         </nav>
     </header>
 
+    <div style="margin: 10px auto; width: 450px">
+        <fieldset>
+            <form name="filterForm">
+                <label>Keyword: </label>
+                <input name="keyword" id="keyword">
+                <select name="sortState">
+                    <option value="0" selected>Last name asc</option>
+                    <option value="1">Last name asc</option>
+                    <option value="2">First name desc</option>
+                    <option value="3">First name desc</option>
+                </select>
+                <input type="submit" value="Filter">
+            </form>
+        </fieldset>
+    </div>
+
     <table class="table_dark">
         <thead>
             <tr>
@@ -44,8 +60,8 @@
 
     <script>
 
-        async function GetClients() {
-            const response = await fetch("https://localhost:44364/api/clients", {
+        async function GetClients(sortState, keyword) {
+            const response = await fetch("https://localhost:44364/api/clients?sortState=" + sortState + "&keyword=" + keyword, {
                 method: "GET",
                 headers: { "Accept": "application/json" }
             });
@@ -57,7 +73,7 @@
                 body.forEach(client => {
                     rows.append(row(client));
                 });
-                
+
             }
         }
 
@@ -67,7 +83,7 @@
                 headers: { "Accept": "application/json" }
             });
             if (response.ok === true) {
-                
+
                 //window.location.href = "../index.html";
                 window.location.href = './ClientBase.html';
             }
@@ -90,8 +106,20 @@
             const phoneNumberTd = document.createElement("td");
             phoneNumberTd.append(client.phoneNumber);
             tr.append(phoneNumberTd);
-            
+
             const linksTd = document.createElement("td");
+
+            const ordersLink = document.createElement("a");
+            //editLink.setAttribute("data-id", user.id);
+            ordersLink.setAttribute("style", "cursor:pointer;padding:15px;");
+            ordersLink.append("Orders");
+            ordersLink.addEventListener("click", e => {
+
+                e.preventDefault();
+                localStorage.setItem('clientId', client.clientId);
+                window.location.href = './ClientOrdersPage.html';
+            });
+            linksTd.append(ordersLink);
 
             const editLink = document.createElement("a");
             //editLink.setAttribute("data-id", user.id);
@@ -113,7 +141,7 @@
 
                 e.preventDefault();
                 DeleteClient(client.clientId);
-                
+
             });
 
             linksTd.append(removeLink);
@@ -122,8 +150,14 @@
             return tr;
         }
 
-        GetClients();
-
+        GetClients(0, "");
+        document.forms["filterForm"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["filterForm"];
+            const keyword = form.elements["keyword"].value;
+            const sortState = form.elements["sortState"].value;
+            GetClients(sortState, keyword);
+        });
 
     </script>
 

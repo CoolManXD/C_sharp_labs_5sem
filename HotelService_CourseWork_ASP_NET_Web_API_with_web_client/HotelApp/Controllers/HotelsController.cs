@@ -23,9 +23,9 @@ namespace HotelApp.Controllers
             this.mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetHotels()
+        public IActionResult GetHotels([FromQuery] string keyword)
         {
-            IEnumerable<HotelDTO> hotels = hotelAdminService.FindHotels();
+            IEnumerable<HotelDTO> hotels = hotelAdminService.FindHotels(keyword);
             return Ok(mapper.Map<IEnumerable<HotelDTO>, IEnumerable<HotelModel>>(hotels));
         }
         [HttpGet("{id?}")]
@@ -69,6 +69,14 @@ namespace HotelApp.Controllers
             if (info is null)
                 return NotFound();
             return Ok(mapper.Map<InfoHotelModel>(info));
+        }
+        [HttpGet("{id}/orders")]
+        public IActionResult GetHotelOrders(int id, [FromQuery] OrderFilterModel filter)
+        {
+            if (filter is null)
+                return BadRequest(nameof(filter));
+            IEnumerable<ActiveOrderDTO> orders = hotelAdminService.GetHotelOrders(id, mapper.Map<OrderFilterDTO>(filter));
+            return Ok(mapper.Map<IEnumerable<ActiveOrderDTO>, IEnumerable<ActiveOrderModel>>(orders));
         }
     }
 }

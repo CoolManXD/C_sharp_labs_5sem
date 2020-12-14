@@ -20,8 +20,13 @@ namespace HotelApp.Infrastructure
                                                                                                   .MapValue(PaymentStateEnumModel.Paid,PaymentStateEnumDTO.P)).ReverseMap();
 
             CreateMap<HotelModel, HotelDTO>().ReverseMap();
-            CreateMap<ActiveOrderModel, ActiveOrderDTO>().ReverseMap();
+            CreateMap<ActiveOrderDTO, ActiveOrderModel>().ReverseMap(); 
+
             CreateMap<InfoHotelModel, InfoHotelDTO>().ReverseMap();
+
+            CreateMap<OrderFilterModel, OrderFilterDTO>().ReverseMap();
+            CreateMap<SortClientEnumModel, SortClientEnumDTO>().ConvertUsingEnumMapping(p => p.MapByValue()).ReverseMap();
+            CreateMap<ClientFilterModel, ClientFilterDTO>().ReverseMap();
         }
     }
 }

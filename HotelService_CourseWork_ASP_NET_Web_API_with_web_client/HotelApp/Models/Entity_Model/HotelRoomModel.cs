@@ -4,6 +4,7 @@ namespace HotelApp.Models
     public class HotelRoomModel
     {
         public int HotelRoomId { get; set; }
+        public HotelModel Hotel { get; set; }
         public int HotelId { get; set; }
         public string Number { get; set; }
         public decimal PricePerDay { get; set; }

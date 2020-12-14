@@ -5,6 +5,7 @@
     <title>Hotel Service</title>
     <link rel="stylesheet" href="css/site.css" />
     <link rel="stylesheet" href="css/table.css" />
+    <link rel="stylesheet" href="css/fields.css" media="screen" type="text/css" />
 </head>
 <body>
     <header>
@@ -29,6 +30,18 @@
         </nav>
     </header>
 
+    <div style="margin: 10px auto; width: 315px">
+        <label>Keyword: </label>
+        <input name="keyword" id="keyword">
+        <!--<fieldset>
+            <form name="filterForm">
+                <label>Keyword: </label>
+                <input name="keyword" id="keyword">
+                <input type="submit" value="Filter">
+            </form>
+        </fieldset>-->
+    </div>
+
     <table class="table_dark">
         <thead>
             <tr>
@@ -43,8 +56,8 @@
 
     <script>
 
-        async function GetHotels() {
-            const response = await fetch("https://localhost:44364/api/hotels", {
+        async function GetHotels(keyword) {
+            const response = await fetch("https://localhost:44364/api/hotels?keyword=" + keyword, {
                 method: "GET",
                 headers: { "Accept": "application/json" }
             });
@@ -56,7 +69,7 @@
                 body.forEach(hotel => {
                     rows.append(row(hotel));
                 });
-                
+
             }
         }
 
@@ -82,7 +95,7 @@
             addressTd.append(hotel.address);
             tr.append(addressTd);
 
-            
+
             const linksTd = document.createElement("td");
 
             const manageLink = document.createElement("a");
@@ -114,9 +127,18 @@
             return tr;
         }
 
-        GetHotels();
+        GetHotels("");
+        //document.forms["filterForm"].addEventListener("submit", e => {
+        //    e.preventDefault();
+        //    const form = document.forms["filterForm"];
+        //    const keyword = form.elements["keyword"].value;
+        //    GetHotels(keyword);
+        //});
 
-
+        document.querySelector("#keyword").onchange = function () {
+            
+            GetHotels(this.value);
+        };
     </script>
 
 </body>

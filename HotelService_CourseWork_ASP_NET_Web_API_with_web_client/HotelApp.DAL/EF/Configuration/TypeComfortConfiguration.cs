@@ -2,7 +2,7 @@
 using HotelApp.DAL.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HotelApp.DAL.EF
+namespace HotelApp.DAL.EF.Configuration
 {
     class TypeComfortConfiguration: IEntityTypeConfiguration<TypeComfort>
     {

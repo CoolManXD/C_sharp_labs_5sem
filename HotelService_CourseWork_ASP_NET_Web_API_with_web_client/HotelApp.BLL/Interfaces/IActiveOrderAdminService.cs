@@ -12,6 +12,6 @@ namespace HotelApp.BLL.Interfaces
         public ActiveOrderDTO InsertOrder(ActiveOrderDTO order);
         public bool UpdateOrder(ActiveOrderDTO order);
         public bool DeleteOrder(int deleteOrderId);
-        public void ConfirmPayment(int activeOrderId);
+        public bool ConfirmPayment(int activeOrderId);
     }
 }

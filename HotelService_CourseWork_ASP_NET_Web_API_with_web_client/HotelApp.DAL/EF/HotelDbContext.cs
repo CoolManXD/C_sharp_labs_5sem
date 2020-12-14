@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using HotelApp.DAL.Entities;
+using HotelApp.DAL.EF.Configuration;
 
 namespace HotelApp.DAL.EF
 {
