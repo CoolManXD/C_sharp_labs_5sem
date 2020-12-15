@@ -55,6 +55,11 @@ namespace HotelApp.Controllers
         {
             if (client is null)
                 return BadRequest(new ArgumentNullException(nameof(client)));
+            if (clientAdminService.IsClientExist(client.PhoneNumber))
+            {
+                ModelState.AddModelError("PhoneNumber", "Phone number is busy");
+                return BadRequest(ModelState);
+            }
             if (clientAdminService.UpdateClient(mapper.Map<ClientDTO>(client)))
                 return Ok();
             else

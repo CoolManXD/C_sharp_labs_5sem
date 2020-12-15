@@ -51,6 +51,9 @@
                 method: "PUT",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" }
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
             if (response.ok === true) {
                 GetOrders(localStorage['clientId']);
             }
@@ -61,6 +64,9 @@
                 method: "DELETE",
                 headers: { "Accept": "application/json" }
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
             if (response.ok === true) {
                 GetOrders(localStorage['clientId']);
             }
@@ -71,6 +77,9 @@
                 method: "GET",
                 headers: { "Accept": "application/json" }
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
             if (response.ok === true) {
                 const body = await response.json();
                 let rows = document.querySelector("tbody");

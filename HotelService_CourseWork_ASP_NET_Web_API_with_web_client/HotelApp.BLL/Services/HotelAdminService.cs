@@ -75,16 +75,15 @@ namespace HotelApp.BLL.Services
                  .Where(p => p.HotelRoom.HotelId == hotelId);
             if (filter.PaymentState != 0)
             {
-                orders = orders.Where(p => p.PaymentState == Mapper.Map<PaymentStateEnum>(filter.PaymentState))
-                .Where(p => p.HotelRoom.HotelId == hotelId).OrderBy(p => p.CheckInDate).ToList();
-                return Mapper.Map<IEnumerable<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(orders);
+                orders = orders.Where(p => p.PaymentState == Mapper.Map<PaymentStateEnum>(filter.PaymentState));
+     
             }
-            else
+            if (filter.Start != null && filter.End != null)
             {
-                orders = orders.Where(p => p.CheckInDate >= filter.Start && p.CheckInDate <= filter.End)
-                .OrderBy(p => p.CheckInDate).ToList();
-                return Mapper.Map<IEnumerable<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(orders);
-            }           
+                orders = orders.Where(p => p.CheckInDate >= filter.Start && p.CheckInDate <= filter.End);          
+            }
+            orders = orders.OrderBy(p => p.CheckInDate);
+            return Mapper.Map<IEnumerable<ActiveOrder>, IEnumerable<ActiveOrderDTO>>(orders.ToList());
         }
         public InfoHotelDTO GetHotelInfo(int hotelId)
         {

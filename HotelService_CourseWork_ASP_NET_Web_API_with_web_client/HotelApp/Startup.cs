@@ -32,7 +32,7 @@ namespace HotelApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options => options.Filters.Add(typeof(ErrorExceptionFilter)));
 
             services.AddDbContext<HotelDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -45,6 +45,8 @@ namespace HotelApp
             services.AddScoped<IHotelRoomsAdminService, HotelRoomsAdminService>();
             services.AddScoped<IClientAdminService, ClientAdminService>();
             services.AddScoped<IActiveOrderAdminService, ActiveOrderAdminService>();
+
+            services.AddSwaggerGen(options => options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Hotel API", Version = "v1" }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +54,7 @@ namespace HotelApp
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+               app.UseDeveloperExceptionPage();
             }
 
             // app.UseHttpsRedirection();
@@ -60,7 +62,12 @@ namespace HotelApp
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel API v1"));
+
             app.UseRouting();
+
+            
 
             app.UseCors(builder => builder.AllowAnyOrigin());
             //app.UseAuthorization();

@@ -29,7 +29,8 @@
             </ul>
         </nav>
     </header>
-    
+
+    <div id="errors" class="myDiv" style="display:none; color: darkred"></div>
 
     <div id="login-form">
         <h1>New room</h1>
@@ -73,6 +74,47 @@
                     TypeSize: parseInt(typeSize)
                 })
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
+            if (response.status == 400) {
+                const body = await response.json();
+                const errorBlock = document.getElementById("errors")
+
+                errorBlock.innerHTML = "";
+                if (body.errors) {
+                    if (body.errors.Number) {
+                        body.errors.Number.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.PricePerDay) {
+                        body.errors.PricePerDay.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.TypeSize) {
+                        body.errors.TypeSize.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.TypeComfort) {
+                        body.errors.TypeComfort.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                }
+
+                errorBlock.style.display = "block";
+            }
             if (response.ok === true) {
                 window.location.href = "../ManagePage.html"
             }

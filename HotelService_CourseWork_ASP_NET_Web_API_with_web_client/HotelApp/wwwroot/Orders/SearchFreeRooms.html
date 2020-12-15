@@ -30,6 +30,8 @@
         </nav>
     </header>
 
+    <div id="errors" class="myDiv" style="display:none; color: darkred"></div>
+
     <div id="login-form">
         <h1>Search free rooms</h1>
         <fieldset>
@@ -69,6 +71,31 @@
                 method: "GET",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" }
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
+            if (response.status == 400) {
+                const body = await response.json();
+                const errorBlock = document.getElementById("errors")
+
+                errorBlock.innerHTML = "";
+
+                if (body.CheckOutDate) {
+                    body.CheckOutDate.forEach(error => {
+                        const p = document.createElement("p");
+                        p.append(error);
+                        errorBlock.append(p);
+                    });
+                }
+                if (body.CheckInDate) {
+                    body.CheckInDate.forEach(error => {
+                        const p = document.createElement("p");
+                        p.append(error);
+                        errorBlock.append(p);
+                    });
+                }
+                errorBlock.style.display = "block";
+            }
             if (response.ok === true) {
                 const body = await response.json();
                 localStorage.setItem('freeRooms', JSON.stringify(body));

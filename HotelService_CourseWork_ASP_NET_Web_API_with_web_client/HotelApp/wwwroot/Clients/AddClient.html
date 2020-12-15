@@ -30,17 +30,22 @@
     </header>
 
 
+    <div id="errors" class="myDiv" style="display:none; color: darkred"></div>
+
     <div id="login-form">
         <h1>New client</h1>
         <fieldset>
             <form name="clientForm">
                 <input type="text" name="firstName" required placeholder="FirstName" pattern="^[a-zA-Z]+$">
-                <input type="text" name="lastName" required placeholder="LastName" pattern="^[a-zA-Z]+$">
+                <input type="text" name="lastName" required placeholder="LastName"  pattern="^[a-zA-Z]+$">
                 <input type="text" name="phoneNumber" required placeholder="PhoneNumber" pattern="^[0-9]+$">
                 <input type="submit" value="Add">
             </form>
         </fieldset>
+
     </div>
+
+
 
     <script>
         async function AddClient(firstName, lastName, phoneNumber) {
@@ -54,6 +59,47 @@
                     PhoneNumber: phoneNumber
                 })
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
+            if (response.status == 400) {
+                const body = await response.json();
+                const errorBlock = document.getElementById("errors")
+
+                errorBlock.innerHTML = "";
+                if (body.errors) {
+                    if (body.errors.FirstName) {
+                        body.errors.FirstName.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.LastName) {
+                        body.errors.LastName.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.PhoneNumber) {
+                        body.errors.PhoneNumber.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                }
+                if (body.PhoneNumber) {
+                    body.PhoneNumber.forEach(error => {
+                        const p = document.createElement("p");
+                        p.append(error);
+                        errorBlock.append(p);
+                    });
+                }
+
+                errorBlock.style.display = "block";
+            }
             if (response.ok === true) {
                 window.location.href = "./ClientBase.html"
             }

@@ -50,6 +50,9 @@
                 method: "GET",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" }
             });
+            if (response.status == 500) {
+                window.location.href = "../error.html";
+            }
             if (response.ok === true) {
                 const body = await response.json();
                 localStorage.setItem('orders', JSON.stringify(body));

@@ -126,38 +126,13 @@
             }
             else {
                 const body = await response.json();
-                let clientId = body.clientId;
-
                 form.addEventListener("submit", e => {
                     e.preventDefault();
                     const form2 = document.forms["orderForm"];
                     const checkOutDate = form2.elements["CheckOutDate"].value;
-                    let dateIn = new Date(myData.checkInDate);
-                    let dateOut = new Date(checkOutDate);
-                    dateOut.setMilliseconds(-2 * 60 * 60 * 1000);
-                    let maxOut = new Date(myData.maxCheckOutDate);
-                    if (dateOut <= dateIn) {
-                        const errorBlock = document.getElementById("errors")
-
-                        errorBlock.innerHTML = "";
-                        const p = document.createElement("p");
-                        p.append("Check-in date can't be more or equal than Check-out date");
-                        errorBlock.append(p);
-                        errorBlock.style.display = "block";
-                    }
-                    else if (myData.maxCheckOutDate != null && maxOut < dateOut) {
-                        const errorBlock = document.getElementById("errors")
-
-                        errorBlock.innerHTML = "";
-                        const p = document.createElement("p");
-                        p.append("Check-out date can't be more or equal than max check-out date");
-                        errorBlock.append(p);
-                        errorBlock.style.display = "block";
-                    }
-                    else {
-                        const paymentState = form2.elements["PaymentState"].value;
-                        AddOrder(clientId, checkOutDate, paymentState);
-                    }
+                    const paymentState = form2.elements["PaymentState"].value;
+                    let clientId = body.clientId;
+                    AddOrder(clientId, checkOutDate, paymentState);
                 });
             }
 

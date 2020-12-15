@@ -27,6 +27,8 @@ namespace HotelApp.Controllers
         {
             IEnumerable<HotelDTO> hotels = hotelAdminService.FindHotels(keyword);
             return Ok(mapper.Map<IEnumerable<HotelDTO>, IEnumerable<HotelModel>>(hotels));
+            
+
         }
         [HttpGet("{id?}")]
         public IActionResult GetHotel(int id)

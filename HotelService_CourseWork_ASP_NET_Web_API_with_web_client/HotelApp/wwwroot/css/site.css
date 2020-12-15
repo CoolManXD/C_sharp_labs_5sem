@@ -102,3 +102,14 @@ nav {
     padding: 10px; /* Поля вокруг текста */
     margin: auto; /* Выравниваем по центру */
 }
+
+
+.myDiv {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    width: 640px;
+    text-align: center;
+    border-collapse: collapse;
+    background: grey;
+    margin: auto;
+}

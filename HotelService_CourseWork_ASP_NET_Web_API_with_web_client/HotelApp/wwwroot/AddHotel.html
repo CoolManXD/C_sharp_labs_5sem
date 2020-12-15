@@ -29,6 +29,7 @@
         </nav>
     </header>
 
+    <div id="errors" class="myDiv" style="display:none; color: darkred"></div>
 
     <div id="login-form">
         <h1>New hotel</h1>
@@ -52,6 +53,33 @@
                     Address: address
                 })
             });
+            if (response.status == 500) {
+                window.location.href = "./error.html";
+            }
+            if (response.status == 400) {
+                const body = await response.json();
+                const errorBlock = document.getElementById("errors")
+
+                errorBlock.innerHTML = "";
+                if (body.errors) {
+                    if (body.errors.Name) {
+                        body.errors.Name.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                    if (body.errors.Address) {
+                        body.errors.Address.forEach(error => {
+                            const p = document.createElement("p");
+                            p.append(error);
+                            errorBlock.append(p);
+                        });
+                    }
+                }
+
+                errorBlock.style.display = "block";
+            }
             if (response.ok === true) {
                 window.location.href = "./index.html"
             }

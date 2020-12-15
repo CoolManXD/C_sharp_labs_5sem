@@ -84,9 +84,9 @@ namespace HotelApp.Controllers
             if (filter is null)
                 return BadRequest(new ArgumentNullException(nameof(filter)));
             if (filter.CheckOutDate != null && filter.CheckInDate >= filter.CheckOutDate)
-                ModelState.AddModelError("", "CheckInDate can't be more or equal than CheckOutDate");
+                ModelState.AddModelError("CheckOutDate", "Check-in date can't be more or equal than check-out date");
             if (filter.CheckInDate.Date < DateTime.Today)
-                ModelState.AddModelError("", "CheckInDate can't be less than current date");
+                ModelState.AddModelError("CheckInDate", "Check-in date can't be less than current date");
             if (ModelState.IsValid)
             {
                 IEnumerable<FreeHotelRoomDTO> rooms = roomsAdminService.SearchFreeRooms(mapper.Map<HotelRoomSeachFilterDTO>(filter));

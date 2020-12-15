@@ -61,6 +61,7 @@
                 method: "GET",
                 headers: { "Accept": "application/json" }
             });
+      
             if (response.ok === true) {
                 const body = await response.json();
                 let rows = document.querySelector("tbody");
@@ -70,6 +71,9 @@
                     rows.append(row(hotel));
                 });
 
+            }
+            if (response.status == 500) {
+                window.location.href = "./error.html";
             }
         }
 
