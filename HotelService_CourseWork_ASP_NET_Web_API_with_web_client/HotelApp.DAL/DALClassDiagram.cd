@@ -1,52 +1,52 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="HotelApp.DAL.EF.Configuration.ActiveOrderConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="14.25" Y="4.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.ActiveOrderConfiguration" BaseTypeListCollapsed="true">
+    <Position X="27" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\ActiveOrderConfiguration.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="HotelApp.DAL.EF.Configuration.ClientConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="12.25" Y="4.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.ClientConfiguration" BaseTypeListCollapsed="true">
+    <Position X="25.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\ClientConfiguration.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="HotelApp.DAL.EF.Configuration.HotelConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="18" Y="4.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.HotelConfiguration" BaseTypeListCollapsed="true">
+    <Position X="17.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\HotelConfiguration.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HotelApp.DAL.EF.Configuration.HotelRoomConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="16" Y="4.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.HotelRoomConfiguration" BaseTypeListCollapsed="true">
+    <Position X="20" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\HotelRoomConfiguration.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="HotelApp.DAL.EF.Configuration.TypeComfortConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="17.5" Y="11.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.TypeComfortConfiguration" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\TypeComfortConfiguration.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="HotelApp.DAL.EF.Configuration.TypeSizeConfiguration" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="15" Y="11.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.EF.Configuration.TypeSizeConfiguration" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EF\Configuration\TypeSizeConfiguration.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="HotelApp.DAL.EF.HotelDbContext">
     <Position X="18" Y="0.75" Width="1.5" />
@@ -64,56 +64,56 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="HotelApp.DAL.Entities.ActiveOrder">
-    <Position X="14.25" Y="5.25" Width="1.5" />
+    <Position X="27" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgBAAgAAAAAAAIAAAAAoAAAAAAAAAAMQ=</HashCode>
       <FileName>Entities\ActiveOrder.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelApp.DAL.Entities.Client">
-    <Position X="12.25" Y="5.25" Width="1.5" />
+    <Position X="25.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgEAAAAAAAgAAgAAAQAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>Entities\Client.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelApp.DAL.Entities.Hotel">
-    <Position X="18" Y="5.25" Width="1.5" />
+    <Position X="18.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAQAAAAAAAACAAQAAAAAAAA=</HashCode>
       <FileName>Entities\Hotel.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelApp.DAL.Entities.HotelRoom">
-    <Position X="16" Y="5.25" Width="1.5" />
+    <Position X="20" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAECAAAAAggAAAGAAAAAAABAAEAAAAAQBAAAAAAA=</HashCode>
       <FileName>Entities\HotelRoom.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HotelApp.DAL.Entities.TypeComfort" Collapsed="true">
-    <Position X="17.5" Y="10.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.Entities.TypeComfort">
+    <Position X="23.5" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Entities\TypeComfort.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HotelApp.DAL.Entities.TypeSize" Collapsed="true">
-    <Position X="15" Y="10.25" Width="1.5" />
+  <Class Name="HotelApp.DAL.Entities.TypeSize">
+    <Position X="21.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\TypeSize.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelApp.DAL.Migrations.InitialCreate" Collapsed="true">
-    <Position X="22" Y="2.5" Width="1.5" />
+    <Position X="23.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAI=</HashCode>
-      <FileName>Migrations\20201212230339_InitialCreate.cs</FileName>
+      <FileName>Migrations\20201216104049_InitialCreate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HotelApp.DAL.Migrations.HotelDbContextModelSnapshot" Collapsed="true">
-    <Position X="22" Y="1.25" Width="1.5" />
+    <Position X="23.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>Migrations\HotelDbContextModelSnapshot.cs</FileName>
@@ -209,22 +209,26 @@
       <FileName>Interfaces\IUnitOfWork.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="HotelApp.DAL.Entities.PaymentStateEnum" Collapsed="true">
-    <Position X="12.25" Y="9.25" Width="1.5" />
+  <Interface Name="Microsoft.EntityFrameworkCore.IEntityTypeConfiguration&lt;TEntity&gt;">
+    <Position X="30.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="HotelApp.DAL.Entities.PaymentStateEnum">
+    <Position X="27" Y="9" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFAAAA=</HashCode>
       <FileName>Entities\ActiveOrder.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="HotelApp.DAL.Entities.TypeComfortEnum" Collapsed="true">
-    <Position X="17.5" Y="9.25" Width="1.5" />
+  <Enum Name="HotelApp.DAL.Entities.TypeComfortEnum">
+    <Position X="23.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAEAAQAgAAAAAAAAAAgAAAAAAAAAAAgAAAAAgA=</HashCode>
       <FileName>Entities\TypeComfort.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="HotelApp.DAL.Entities.TypeSizeEnum" Collapsed="true">
-    <Position X="15" Y="9.25" Width="1.5" />
+  <Enum Name="HotelApp.DAL.Entities.TypeSizeEnum">
+    <Position X="21.75" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAEAAQAAAAAAAAAAAAAAAABAAgIAAAAAAAAAABA=</HashCode>
       <FileName>Entities\TypeSize.cs</FileName>

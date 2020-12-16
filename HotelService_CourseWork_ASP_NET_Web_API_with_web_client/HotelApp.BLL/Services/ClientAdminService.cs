@@ -97,32 +97,16 @@ namespace HotelApp.BLL.Services
             UnitOfWork.Save();
             return true;
         }
+        public bool IsClientExist(string phoneNumber)
+        {
+            if (UnitOfWork.Clients.FindByPhoneNumber(phoneNumber) is null)
+                return false;
+            else
+                return true;
+        }
         public void Dispose()
         {
             UnitOfWork.Dispose();
-        }
-        public ActiveOrderDTO AddClientActiveOrder(ClientDTO _client, ActiveOrderDTO _order)
-        {
-            if (_order is null)
-                throw new ArgumentNullException(nameof(_client));
-            if (_client is null)
-                throw new ArgumentException(nameof(_order));
-
-            ActiveOrder order = Mapper.Map<ActiveOrder>(_order);
-            Client client = UnitOfWork.Clients.FindByPhoneNumber(_client.PhoneNumber);
-            if (client is null)
-            {
-                client = Mapper.Map<Client>(_client);
-                client.ActiveOrders.Add(order);
-                UnitOfWork.Clients.Insert(client);
-            }
-            else
-            {
-                client.ActiveOrders.Add(order);
-                UnitOfWork.Clients.Update(client);
-            }
-            UnitOfWork.Save();
-            return Mapper.Map<ActiveOrderDTO>(order);
         }
         public IEnumerable<ActiveOrderDTO> FindClientActiveOrders(string phoneNumber, PaymentStateEnumDTO paymentState = default)
         {
@@ -135,13 +119,30 @@ namespace HotelApp.BLL.Services
             }
             return new List<ActiveOrderDTO>();
         }
-        public bool IsClientExist(string phoneNumber)
-        {
-            if (UnitOfWork.Clients.FindByPhoneNumber(phoneNumber) is null)
-                return false;
-            else
-                return true;
-        }
+        //public ActiveOrderDTO AddClientActiveOrder(ClientDTO _client, ActiveOrderDTO _order)
+        //{
+        //    if (_order is null)
+        //        throw new ArgumentNullException(nameof(_client));
+        //    if (_client is null)
+        //        throw new ArgumentException(nameof(_order));
+
+        //    ActiveOrder order = Mapper.Map<ActiveOrder>(_order);
+        //    Client client = UnitOfWork.Clients.FindByPhoneNumber(_client.PhoneNumber);
+        //    if (client is null)
+        //    {
+        //        client = Mapper.Map<Client>(_client);
+        //        client.ActiveOrders.Add(order);
+        //        UnitOfWork.Clients.Insert(client);
+        //    }
+        //    else
+        //    {
+        //        client.ActiveOrders.Add(order);
+        //        UnitOfWork.Clients.Update(client);
+        //    }
+        //    UnitOfWork.Save();
+        //    return Mapper.Map<ActiveOrderDTO>(order);
+        //}
+
     }
 }
 

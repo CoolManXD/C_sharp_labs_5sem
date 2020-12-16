@@ -30,7 +30,7 @@ namespace HotelApp.Controllers
             
 
         }
-        [HttpGet("{id?}")]
+        [HttpGet("{id}")]
         public IActionResult GetHotel(int id)
         {
             HotelDTO hotel = hotelAdminService.FindHotel(id);
