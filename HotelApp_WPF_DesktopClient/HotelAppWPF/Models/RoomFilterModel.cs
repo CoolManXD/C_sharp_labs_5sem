@@ -3,45 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-
+using System.Text;
 
 namespace HotelAppWPF.Models
 {
-    public class HotelRoomModel : INotifyPropertyChanged, IDataErrorInfo
+    public class RoomFilterModel : INotifyPropertyChanged, IDataErrorInfo
     {
-        private int hotelRoomId;
-        private HotelModel hotel;
         private int hotelId;
-        private string number;
-        private decimal pricePerDay;
         private TypeSizeEnumModel typeSize;
         private TypeComfortEnumModel typeComfort;
-        public DateTime CheckInDate { get; set; }
-        public DateTime? MaxCheckOutDate { get; set; }
-        public int HotelRoomId { 
-            get
-            {
-                return hotelRoomId;
-            }
-            set
-            {
-                hotelRoomId = value;
-                OnPropertyChanged(nameof(HotelRoomId));
-            }
-        }
-        public HotelModel Hotel
-        {
-            get
-            {
-                return hotel;
-            }
-            set
-            {
-                hotel = value;
-                OnPropertyChanged(nameof(Hotel));
-            }
-        }
+        private DateTime? checkInDate;
+        private DateTime? checkOutDate;
         public int HotelId
         {
             get
@@ -52,30 +24,6 @@ namespace HotelAppWPF.Models
             {
                 hotelId = value;
                 OnPropertyChanged(nameof(HotelId));
-            }
-        }
-        public string Number
-        {
-            get
-            {
-                return number;
-            }
-            set
-            {
-                number = value;
-                OnPropertyChanged(nameof(Number));
-            }
-        }
-        public decimal PricePerDay
-        {
-            get
-            {
-                return pricePerDay;
-            }
-            set
-            {
-                pricePerDay = value;
-                OnPropertyChanged(nameof(PricePerDay));
             }
         }
         public TypeSizeEnumModel TypeSize
@@ -102,7 +50,48 @@ namespace HotelAppWPF.Models
                 OnPropertyChanged(nameof(TypeComfort));
             }
         }
+        public DateTime? CheckInDate
+        {
+            get
+            {
+                return checkInDate;
+            }
+            set
+            {
+                checkInDate = value;
 
+                if (checkInDate is null || checkInDate.Value.Date < DateTime.Today)
+                {
+                    errors["CheckInDate"] = "Incorrect check-in date";
+                }
+                else
+                {
+                    errors["CheckInDate"] = null;
+                }
+                OnPropertyChanged(nameof(CheckInDate));
+            }
+        }
+        public DateTime? CheckOutDate
+        {
+            get
+            {
+                return checkOutDate;
+            }
+            set
+            {
+                checkOutDate = value;
+
+                if (checkInDate is null || checkOutDate <= checkInDate)
+                {
+                    errors["CheckOutDate"] = "Incorrect check-out date";
+                }
+                else
+                {
+                    errors["CheckOutDate"] = null;
+                }
+                OnPropertyChanged(nameof(CheckOutDate));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

@@ -35,6 +35,15 @@ namespace HotelAppWPF.Models
             set
             {
                 firstName = value;
+                Regex check = new Regex(@"^[a-zA-Z]+$");
+                if (!check.IsMatch(firstName))
+                {
+                    errors["FirstName"] = "Incorrect first name";
+                }
+                else
+                {
+                    errors["FirstName"] = null;
+                }
                 OnPropertyChanged(nameof(FirstName));
             }
         }
@@ -47,6 +56,15 @@ namespace HotelAppWPF.Models
             set
             {
                 lastName = value;
+                Regex check = new Regex(@"^[a-zA-Z]+$");
+                if (!check.IsMatch(lastName))
+                {
+                    errors["LastName"] = "Incorrect last name";
+                }
+                else
+                {
+                    errors["LastName"] = null;
+                }
                 OnPropertyChanged(nameof(LastName));
             }
         }
@@ -59,6 +77,15 @@ namespace HotelAppWPF.Models
             set
             {
                 phoneNumber = value;
+                Regex check = new Regex(@"^[0-9]+$");
+                if (!check.IsMatch(phoneNumber))
+                {
+                    errors["PhoneNumber"] = "Incorrect phone number";
+                }
+                else
+                {
+                    errors["PhoneNumber"] = null;
+                }
                 OnPropertyChanged(nameof(PhoneNumber));
             }
         }

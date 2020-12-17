@@ -66,11 +66,8 @@ namespace HotelApp
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotel API v1"));
 
             app.UseRouting();
-
-            
-
+         
             app.UseCors(builder => builder.AllowAnyOrigin());
-            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

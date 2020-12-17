@@ -4,11 +4,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace HotelAppWPF.Models
+namespace HotelAppWPF
 {
     public enum TypeSizeEnumModel : byte
     {
-        Undefined = 0,
+        NoMatter = 0,
         SGL,
         DBL,
         DBL_TWN,
@@ -18,7 +18,7 @@ namespace HotelAppWPF.Models
     }
     public enum TypeComfortEnumModel : byte
     {
-        Undefined = 0,
+        NoMatter = 0,
         Standart,
         Suite,
         De_Luxe,

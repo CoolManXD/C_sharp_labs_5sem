@@ -20,3 +20,5 @@ E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\bin\Debug\netcoreapp3.
 E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\obj\Debug\netcoreapp3.1\HotelAppWPF.csproj.CoreCompileInputs.cache
 E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\obj\Debug\netcoreapp3.1\HotelAppWPF.csproj.CopyComplete
+E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+E:\VS\labs_c#_5sem\HotelApp_WPF_DesktopClient\HotelAppWPF\obj\Debug\netcoreapp3.1\HotelAppWPF.csprojAssemblyReference.cache
